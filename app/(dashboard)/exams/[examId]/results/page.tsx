@@ -70,10 +70,13 @@ export default function ExamResultsPage() {
       const response = await api.get(`/exams/${examId}/results/export?format=xlsx`, {
         responseType: "blob",
       });
+      const contentDisposition = response.headers?.["content-disposition"];
+      const filenameMatch = contentDisposition?.match(/filename="?([^";]+)"?/);
+      const filename = filenameMatch?.[1] || `exam-${examId}-results.xlsx`;
       const url = URL.createObjectURL(response.data);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `exam-${examId}-results.xlsx`;
+      a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
     } catch {
@@ -108,10 +111,13 @@ export default function ExamResultsPage() {
       const response = await api.get(`/exams/${examId}/results/export?format=pdf`, {
         responseType: "blob",
       });
+      const contentDisposition = response.headers?.["content-disposition"];
+      const filenameMatch = contentDisposition?.match(/filename="?([^";]+)"?/);
+      const filename = filenameMatch?.[1] || `exam-${examId}-results.pdf`;
       const url = URL.createObjectURL(response.data);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `exam-${examId}-results.pdf`;
+      a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
     } catch {

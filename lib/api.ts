@@ -17,6 +17,10 @@ api.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // For FormData, let browser set Content-Type with boundary (required for multipart)
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    }
   }
   return config;
 });
@@ -25,8 +29,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && (error.response?.status === 401 || error.response?.status === 403)) {
+      const isAuthEndpoint = error.config?.url?.includes("/auth/login") || error.config?.url?.includes("/auth/signup");
+      if (!isAuthEndpoint) {
         localStorage.removeItem("optimark_token");
       }
     }
