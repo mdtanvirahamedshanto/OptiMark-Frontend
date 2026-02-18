@@ -12,8 +12,11 @@ import { useToast } from "@/components/ui/Toast";
 import { api, getApiErrorMessage } from "@/lib/api";
 import type { AnswerOption } from "@/lib/types";
 
+const BANGLA_SETS = ["ক", "খ", "গ", "ঘ"];
+const ENGLISH_SETS = ["A", "B", "C", "D"];
+
 const STEPS = [
-  { id: 1, title: "Exam Details", description: "Title and subject" },
+  { id: 1, title: "Exam Details", description: "Title, subject, set codes" },
   { id: 2, title: "Answer Key", description: "Define correct answers" },
 ];
 
@@ -26,14 +29,27 @@ export default function CreateExamPage() {
     title: "",
     subjectCode: "",
     totalQuestions: 60,
+    setCodeType: "bangla" as "bangla" | "english",
+    numberOfSets: 4,
   });
-  const [answerKey, setAnswerKey] = useState<Record<number, AnswerOption>>({});
-
-  const handleAnswerChange = (questionNumber: number, option: AnswerOption) => {
-    setAnswerKey((prev) => ({ ...prev, [questionNumber]: option }));
-  };
+  const [selectedSetTab, setSelectedSetTab] = useState(0);
+  const [answerKeyBySet, setAnswerKeyBySet] = useState<
+    Record<string, Record<number, AnswerOption>>
+  >({});
 
   const totalQuestions = Math.min(100, Math.max(1, formData.totalQuestions));
+  const setCodes = formData.setCodeType === "bangla" ? BANGLA_SETS : ENGLISH_SETS;
+  const activeSetCodes = setCodes.slice(0, Math.min(4, Math.max(2, formData.numberOfSets)));
+  const currentSetCode = activeSetCodes[selectedSetTab] ?? activeSetCodes[0];
+  const currentAnswerKey = answerKeyBySet[currentSetCode] ?? {};
+
+  const handleAnswerChange = (setCode: string) => (questionNumber: number, option: AnswerOption) => {
+    setAnswerKeyBySet((prev) => ({
+      ...prev,
+      [setCode]: { ...(prev[setCode] ?? {}), [questionNumber]: option },
+    }));
+  };
+
   const canProceedStep1 =
     formData.title.trim().length > 0 &&
     formData.subjectCode.trim().length > 0 &&
@@ -41,11 +57,22 @@ export default function CreateExamPage() {
     totalQuestions <= 100;
 
   const requiredRange = Array.from({ length: totalQuestions }, (_, i) => i + 1);
-  const answeredCount = requiredRange.filter((q) => answerKey[q] !== undefined).length;
-  const canProceedStep2 = answeredCount === totalQuestions;
+  const allSetsComplete = activeSetCodes.every((sc) => {
+    const ak = answerKeyBySet[sc] ?? {};
+    return requiredRange.every((q) => ak[q] !== undefined);
+  });
+  const canProceedStep2 = allSetsComplete;
+
+  const answeredCountBySet = activeSetCodes.map((sc) => {
+    const ak = answerKeyBySet[sc] ?? {};
+    return requiredRange.filter((q) => ak[q] !== undefined).length;
+  });
 
   const handleNext = () => {
-    if (step === 1 && canProceedStep1) setStep(2);
+    if (step === 1 && canProceedStep1) {
+      setStep(2);
+      setSelectedSetTab(0);
+    }
   };
 
   const handleBack = () => {
@@ -57,16 +84,25 @@ export default function CreateExamPage() {
 
     setIsSubmitting(true);
     try {
-      const filteredAnswers = Object.fromEntries(
-        Object.entries(answerKey).filter(
-          ([k]) => parseInt(k, 10) >= 1 && parseInt(k, 10) <= totalQuestions
-        )
-      );
+      const optMap: Record<string, number> = { A: 0, B: 1, C: 2, D: 3 };
+      const answer_keys = activeSetCodes.map((setCode) => {
+        const ak = answerKeyBySet[setCode] ?? {};
+        const filtered = Object.fromEntries(
+          Object.entries(ak).filter(
+            ([k]) =>
+              parseInt(k, 10) >= 1 && parseInt(k, 10) <= totalQuestions
+          )
+        );
+        const answersNumeric = Object.fromEntries(
+          Object.entries(filtered).map(([k, v]) => [k, optMap[v] ?? 0])
+        );
+        return { set_code: setCode, answers: answersNumeric };
+      });
       const response = await api.post("/exams/create", {
         title: formData.title,
         subject_code: formData.subjectCode,
         total_questions: totalQuestions,
-        answer_key: filteredAnswers,
+        answer_keys,
       });
       const examId = response.data?.id ?? response.data?.exam_id;
       addToast("Exam created! Download OMR template, then upload scanned sheets.", "success");
@@ -178,38 +214,130 @@ export default function CreateExamPage() {
                   Set how many MCQ questions this exam will have (1–100)
                 </p>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  Set Code Type (বাংলা / English)
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="setCodeType"
+                      checked={formData.setCodeType === "bangla"}
+                      onChange={() =>
+                        setFormData((prev) => ({ ...prev, setCodeType: "bangla" }))
+                      }
+                      className="text-[#1e3a5f]"
+                    />
+                    <span className="font-medium">বাংলা (ক, খ, গ, ঘ)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="setCodeType"
+                      checked={formData.setCodeType === "english"}
+                      onChange={() =>
+                        setFormData((prev) => ({ ...prev, setCodeType: "english" }))
+                      }
+                      className="text-[#1e3a5f]"
+                    />
+                    <span className="font-medium">English (A, B, C, D)</span>
+                  </label>
+                </div>
+                <p className="mt-1.5 text-sm text-slate-500">
+                  OMR sheet এ কোন সেট কোড ব্যবহার হবে (বাংলাদেশে বাংলা বেশি ব্যবহৃত)
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  Number of Sets (কয়টি সেট)
+                </label>
+                <select
+                  value={formData.numberOfSets}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      numberOfSets: parseInt(e.target.value, 10),
+                    }))
+                  }
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-[#1e3a5f]"
+                >
+                  <option value={2}>
+                    {formData.setCodeType === "bangla" ? "২ সেট (ক, খ)" : "2 Sets (A, B)"}
+                  </option>
+                  <option value={3}>
+                    {formData.setCodeType === "bangla" ? "৩ সেট (ক, খ, গ)" : "3 Sets (A, B, C)"}
+                  </option>
+                  <option value={4}>
+                    {formData.setCodeType === "bangla" ? "৪ সেট (ক, খ, গ, ঘ)" : "4 Sets (A, B, C, D)"}
+                  </option>
+                </select>
+                <p className="mt-1.5 text-sm text-slate-500">
+                  পরীক্ষার কয়টি সেট থাকবে (২, ৩, বা ৪)
+                </p>
+              </div>
             </div>
           </Card>
         )}
 
-        {/* Step 2: Answer Key */}
+        {/* Step 2: Answer Key - per set (প্রতিটি সেটের প্রশ্ন সিরিয়াল আলাদা) */}
         {step === 2 && (
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Answer Key</CardTitle>
-                  <CardDescription>
-                    Select the correct option (A, B, C, or D) for each of the{" "}
-                    {totalQuestions} questions. This will be used to grade the
-                    OMR uploaded sheets.
-                  </CardDescription>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <span
-                    className={`font-medium ${
-                      canProceedStep2 ? "text-green-600" : "text-slate-500"
+              <div>
+                <CardTitle>Answer Key (প্রতিটি সেটের জন্য আলাদা)</CardTitle>
+                <CardDescription>
+                  প্রতিটি সেটের প্রশ্ন সিরিয়াল আলাদা হয় - তাই প্রতিটি সেটের জন্য আলাদা answer key দিন। 
+                  Set {currentSetCode} এ Q1, Q2... এর সঠিক উত্তর (A/B/C/D) সিলেক্ট করুন।
+                </CardDescription>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 mt-4">
+                {activeSetCodes.map((sc, idx) => (
+                  <button
+                    key={sc}
+                    type="button"
+                    onClick={() => setSelectedSetTab(idx)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedSetTab === idx
+                        ? "bg-[#1e3a5f] text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                     }`}
                   >
-                    {answeredCount}/{totalQuestions} completed
+                    Set {sc} ({answeredCountBySet[idx] ?? 0}/{totalQuestions})
+                  </button>
+                ))}
+                {activeSetCodes.length > 1 && (
+                  <span className="flex items-center gap-2 ml-2 text-sm text-slate-500">
+                    | Copy from:
+                    {activeSetCodes
+                      .filter((sc) => sc !== currentSetCode)
+                      .map((sc) => (
+                        <button
+                          key={`copy-${sc}`}
+                          type="button"
+                          onClick={() => {
+                            const src = answerKeyBySet[sc];
+                            if (src && Object.keys(src).length > 0) {
+                              setAnswerKeyBySet((prev) => ({
+                                ...prev,
+                                [currentSetCode]: { ...src },
+                              }));
+                              addToast(`Copied from Set ${sc}`, "success");
+                            }
+                          }}
+                          className="text-[#1e3a5f] hover:underline font-medium"
+                        >
+                          {sc}
+                        </button>
+                      ))}
                   </span>
-                </div>
+                )}
               </div>
             </CardHeader>
             <AnswerKeyGrid
               totalQuestions={totalQuestions}
-              answerKey={answerKey}
-              onChange={handleAnswerChange}
+              answerKey={currentAnswerKey}
+              onChange={handleAnswerChange(currentSetCode)}
             />
           </Card>
         )}
