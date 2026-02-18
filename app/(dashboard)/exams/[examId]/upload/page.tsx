@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { ManualEditModal } from "@/components/upload/ManualEditModal";
 import { useToast } from "@/components/ui/Toast";
-import { api } from "@/lib/api";
+import { api, getApiErrorMessage } from "@/lib/api";
 import type { AnswerOption } from "@/lib/types";
 import type { ScanResult } from "@/lib/types";
 
@@ -102,31 +102,32 @@ export default function OMRUploadPage() {
             marks_obtained?: number;
             wrong_answers?: number[];
             percentage?: number;
-          }) => ({
-            rollNumber: r.roll_number ?? "?",
-            marks: r.marks_obtained ?? 0,
-            totalMarks: 60,
-            answers: {},
-          }))
+            answers?: number[];
+          }) => {
+            const opts: AnswerOption[] = ["A", "B", "C", "D"];
+            const answers: Record<number, AnswerOption> = {};
+            (r.answers || []).forEach((val, i) => {
+              answers[i + 1] = opts[val] ?? "A";
+            });
+            return {
+              rollNumber: r.roll_number ?? "?",
+              marks: r.marks_obtained ?? 0,
+              totalMarks: 60,
+              answers,
+            };
+          })
         : [];
       setResults(scanResults);
-      addToast(`Successfully scanned ${files.length} OMR sheet(s)`, "success");
+      const successCount = rawResults.filter((r: { success?: boolean }) => r.success).length;
+      addToast(
+        successCount === files.length
+          ? `Successfully scanned ${files.length} OMR sheet(s)`
+          : `Scanned ${successCount} of ${files.length} sheet(s). Some failed - check results.`,
+        successCount === files.length ? "success" : "info"
+      );
     } catch (error) {
-      // Demo: Use mock data when API fails (for development without backend)
       setScanProgress(100);
-      const mockResults: ScanResult[] = files.map((_, i) => ({
-        rollNumber: `R${String(i + 1).padStart(4, "0")}`,
-        marks: Math.floor(Math.random() * 60) + 1,
-        totalMarks: 60,
-        answers: Object.fromEntries(
-          Array.from({ length: 60 }, (_, q) => [
-            q + 1,
-            ["A", "B", "C", "D"][Math.floor(Math.random() * 4)] as AnswerOption,
-          ])
-        ),
-      }));
-      setResults(mockResults);
-      addToast("Using demo results (backend not connected)", "info");
+      addToast(getApiErrorMessage(error, "Failed to scan OMR sheets"), "error");
     } finally {
       setIsScanning(false);
     }

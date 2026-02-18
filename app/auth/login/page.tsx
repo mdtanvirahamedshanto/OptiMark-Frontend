@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { useToast } from "@/components/ui/Toast";
-import { api } from "@/lib/api";
+import { api, getApiErrorMessage } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,21 +38,7 @@ export default function LoginPage() {
       addToast("Welcome back!", "success");
       router.push(role === "admin" ? "/admin/dashboard" : "/dashboard");
     } catch (error) {
-      const isNetworkError =
-        error instanceof Error &&
-        ("code" in error || error.message.includes("Network"));
-      if (isNetworkError) {
-        addToast("Demo mode - using placeholder login", "info");
-        if (typeof window !== "undefined") {
-          localStorage.setItem("optimark_token", "demo-token");
-        }
-        router.push("/dashboard");
-      } else {
-        addToast(
-          error instanceof Error ? error.message : "Invalid email or password",
-          "error"
-        );
-      }
+      addToast(getApiErrorMessage(error, "Invalid email or password"), "error");
     } finally {
       setIsLoading(false);
     }

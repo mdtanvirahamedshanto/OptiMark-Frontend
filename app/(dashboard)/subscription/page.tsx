@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { useToast } from "@/components/ui/Toast";
-import { api } from "@/lib/api";
+import { api, getApiErrorMessage } from "@/lib/api";
 
 const CURRENCY = "৳";
 
@@ -96,8 +96,7 @@ export default function SubscriptionPage() {
       const r = await api.get("/subscription/my-payments");
       setMyPayments(r.data?.payments || []);
     } catch (err: unknown) {
-      const msg = err && typeof err === "object" && "response" in err && (err as { response?: { data?: { detail?: string } } }).response?.data?.detail;
-      addToast(msg || "Failed to submit. Please try again.", "error");
+      addToast(getApiErrorMessage(err, "Failed to submit. Please try again."), "error");
     } finally {
       setIsSubmitting(false);
     }

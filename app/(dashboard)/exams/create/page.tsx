@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { AnswerKeyGrid } from "@/components/exam/AnswerKeyGrid";
 import { useToast } from "@/components/ui/Toast";
-import { api } from "@/lib/api";
+import { api, getApiErrorMessage } from "@/lib/api";
 import type { AnswerOption } from "@/lib/types";
 
 const STEPS = [
@@ -63,19 +63,7 @@ export default function CreateExamPage() {
       addToast("Exam created! Download OMR template, then upload scanned sheets.", "success");
       router.push(examId ? `/exams/${String(examId)}` : "/dashboard");
     } catch (error) {
-      // Demo: Redirect with mock ID when backend is unavailable
-      const isNetworkError =
-        error instanceof Error &&
-        ("code" in error || error.message.includes("Network"));
-      if (isNetworkError) {
-        addToast("Using demo mode - backend not connected", "info");
-        router.push("/exams/demo-exam-001");
-      } else {
-        addToast(
-          error instanceof Error ? error.message : "Failed to create exam",
-          "error"
-        );
-      }
+      addToast(getApiErrorMessage(error, "Failed to create exam"), "error");
     } finally {
       setIsSubmitting(false);
     }

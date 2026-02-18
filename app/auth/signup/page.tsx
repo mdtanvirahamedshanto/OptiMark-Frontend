@@ -8,14 +8,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 import { useToast } from "@/components/ui/Toast";
-import { api } from "@/lib/api";
+import { api, getApiErrorMessage } from "@/lib/api";
 
 export default function SignupPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -38,7 +37,6 @@ export default function SignupPage() {
 
     try {
       const response = await api.post("/auth/signup", {
-        name: formData.name,
         email: formData.email,
         password: formData.password,
       });
@@ -54,21 +52,7 @@ export default function SignupPage() {
       addToast("Account created successfully!", "success");
       router.push("/dashboard");
     } catch (error) {
-      const isNetworkError =
-        error instanceof Error &&
-        ("code" in error || error.message.includes("Network"));
-      if (isNetworkError) {
-        addToast("Demo mode - account created locally", "info");
-        if (typeof window !== "undefined") {
-          localStorage.setItem("optimark_token", "demo-token");
-        }
-        router.push("/dashboard");
-      } else {
-        addToast(
-          error instanceof Error ? error.message : "Failed to create account",
-          "error"
-        );
-      }
+      addToast(getApiErrorMessage(error, "Failed to create account"), "error");
     } finally {
       setIsLoading(false);
     }
@@ -96,17 +80,6 @@ export default function SignupPage() {
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              label="Full Name"
-              type="text"
-              placeholder="John Doe"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, name: e.target.value }))
-              }
-              required
-              autoComplete="name"
-            />
             <Input
               label="Email"
               type="email"
