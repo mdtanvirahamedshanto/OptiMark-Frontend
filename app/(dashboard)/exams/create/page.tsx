@@ -41,7 +41,7 @@ export default function CreateExamPage() {
 
   const totalQuestions = Math.min(100, Math.max(1, formData.totalQuestions));
   const setCodes = formData.setCodeType === "bangla" ? BANGLA_SETS : ENGLISH_SETS;
-  const activeSetCodes = setCodes.slice(0, Math.min(4, Math.max(2, formData.numberOfSets)));
+  const activeSetCodes = setCodes.slice(0, Math.min(4, Math.max(1, formData.numberOfSets)));
   const currentSetCode = activeSetCodes[selectedSetTab] ?? activeSetCodes[0];
   const currentAnswerKey = answerKeyBySet[currentSetCode] ?? {};
 
@@ -174,9 +174,8 @@ export default function CreateExamPage() {
           {STEPS.map((s) => (
             <div
               key={s.id}
-              className={`flex-1 flex items-center gap-2 ${
-                step >= s.id ? "opacity-100" : "opacity-50"
-              }`}
+              className={`flex-1 flex items-center gap-2 ${step >= s.id ? "opacity-100" : "opacity-50"
+                }`}
             >
               <div
                 className={`
@@ -296,6 +295,9 @@ export default function CreateExamPage() {
                   }
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-[#1e3a5f]"
                 >
+                  <option value={1}>
+                    {formData.setCodeType === "bangla" ? "১ সেট (কোন সেট নেই)" : "1 Set (No Set)"}
+                  </option>
                   <option value={2}>
                     {formData.setCodeType === "bangla" ? "২ সেট (ক, খ)" : "2 Sets (A, B)"}
                   </option>
@@ -307,7 +309,7 @@ export default function CreateExamPage() {
                   </option>
                 </select>
                 <p className="mt-1.5 text-sm text-slate-500">
-                  পরীক্ষার কয়টি সেট থাকবে (২, ৩, বা ৪)
+                  পরীক্ষার কয়টি সেট থাকবে (১, ২, ৩, বা ৪)
                 </p>
               </div>
             </div>
@@ -319,9 +321,11 @@ export default function CreateExamPage() {
           <Card>
             <CardHeader>
               <div>
-                <CardTitle>Answer Key (প্রতিটি সেটের জন্য আলাদা)</CardTitle>
+                <CardTitle>Answer Key {activeSetCodes.length > 1 ? "(প্রতিটি সেটের জন্য আলাদা)" : ""}</CardTitle>
                 <CardDescription>
-                  প্রতিটি সেটের প্রশ্ন সিরিয়াল আলাদা হয় - তাই প্রতিটি সেটের জন্য আলাদা answer key দিন।
+                  {activeSetCodes.length > 1
+                    ? "প্রতিটি সেটের প্রশ্ন সিরিয়াল আলাদা হয় - তাই প্রতিটি সেটের জন্য আলাদা answer key দিন। "
+                    : ""}
                   হাতে লেখা বা প্রিন্ট করা answer key (যেমন: ১. ক, 2. A) এর ছবি আপলোড করুন, অথবা ম্যানুয়ালি সিলেক্ট করুন।
                 </CardDescription>
               </div>
@@ -341,20 +345,19 @@ export default function CreateExamPage() {
                   isLoading={isUploadingKey}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  Set {currentSetCode} - Upload Answer Key
+                  {activeSetCodes.length > 1 ? `Set ${currentSetCode} - ` : ""}Upload Answer Key
                 </Button>
                 {activeSetCodes.map((sc, idx) => (
                   <button
                     key={sc}
                     type="button"
                     onClick={() => setSelectedSetTab(idx)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      selectedSetTab === idx
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedSetTab === idx
                         ? "bg-[#1e3a5f] text-white"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    }`}
+                      }`}
                   >
-                    Set {sc} ({answeredCountBySet[idx] ?? 0}/{totalQuestions})
+                    {activeSetCodes.length > 1 ? `Set ${sc}` : "Answer Key"} ({answeredCountBySet[idx] ?? 0}/{totalQuestions})
                   </button>
                 ))}
                 {activeSetCodes.length > 1 && (
