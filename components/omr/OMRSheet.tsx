@@ -143,7 +143,7 @@ export default function OMRSheet({
                             <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
                                 {/* Class */}
                                 <div style={{ width: '90px' }}>
-                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '286px', boxSizing: 'border-box' }}>
+                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '302px', boxSizing: 'border-box' }}>
                                         <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>শ্রেণি</div>
                                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                             <tbody>
@@ -166,7 +166,7 @@ export default function OMRSheet({
                                 </div>
 
                                 {/* Roll Number */}
-                                <div style={{ border: `1px solid ${theme.border}`, width: '182px', height: '286px', boxSizing: 'border-box' }}>
+                                <div style={{ border: `1px solid ${theme.border}`, width: '182px', height: '302px', boxSizing: 'border-box' }}>
                                     <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>রোল নম্বর</div>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', height: '25px' }}>
                                         <tbody>
@@ -195,7 +195,7 @@ export default function OMRSheet({
                                 </div>
 
                                 {/* Subject Code */}
-                                <div style={{ border: `1px solid ${theme.border}`, width: '92px', height: '286px', boxSizing: 'border-box' }}>
+                                <div style={{ border: `1px solid ${theme.border}`, width: '92px', height: '302px', boxSizing: 'border-box' }}>
                                     <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>বিষয় কোড</div>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', height: '25px' }}>
                                         <tbody>
@@ -225,7 +225,7 @@ export default function OMRSheet({
 
                                 {/* Set Code */}
                                 <div style={{ width: '90px' }}>
-                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '286px', boxSizing: 'border-box' }}>
+                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '302px', boxSizing: 'border-box' }}>
                                         <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>সেট কোড</div>
                                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                             <tbody>
@@ -248,7 +248,7 @@ export default function OMRSheet({
                                 </div>
 
                                 {/* Instructions */}
-                                <div style={{ width: '168px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '286px' }}>
+                                <div style={{ width: '168px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '302px' }}>
                                     <div>
                                         <div style={{ backgroundColor: theme.bgSolid, color: '#ffffff', textAlign: 'center', padding: '4px 0' }}>
                                             <p style={{ fontSize: '12px', fontWeight: 'bold', margin: 0 }}>নিয়মাবলী</p>
