@@ -29,16 +29,16 @@ export interface OMRSheetProps {
 }
 
 const colorMaps: Record<OMRColor, any> = {
-    red: { text600: { color: '#e11d48' }, text500: { color: '#f43f5e' }, border: { borderColor: '#f43f5e' }, bg50: { backgroundColor: '#fff1f2' }, bg300: { backgroundColor: '#fda4af70' }, bgSolid: { backgroundColor: '#f43f5e' } },
-    gray: { text600: { color: '#4b5563' }, text500: { color: '#6b7280' }, border: { borderColor: '#6b7280' }, bg50: { backgroundColor: '#f9fafb' }, bg300: { backgroundColor: '#e5e7eb' }, bgSolid: { backgroundColor: '#6b7280' } },
-    blue: { text600: { color: '#2563eb' }, text500: { color: '#3b82f6' }, border: { borderColor: '#3b82f6' }, bg50: { backgroundColor: '#eff6ff' }, bg300: { backgroundColor: '#93c5fd70' }, bgSolid: { backgroundColor: '#3b82f6' } },
-    green: { text600: { color: '#16a34a' }, text500: { color: '#22c55e' }, border: { borderColor: '#22c55e' }, bg50: { backgroundColor: '#f0fdf4' }, bg300: { backgroundColor: '#86efac70' }, bgSolid: { backgroundColor: '#22c55e' } },
-    purple: { text600: { color: '#9333ea' }, text500: { color: '#a855f7' }, border: { borderColor: '#a855f7' }, bg50: { backgroundColor: '#faf5ff' }, bg300: { backgroundColor: '#d8b4fe70' }, bgSolid: { backgroundColor: '#a855f7' } },
-    orange: { text600: { color: '#ea580c' }, text500: { color: '#f97316' }, border: { borderColor: '#f97316' }, bg50: { backgroundColor: '#fff7ed' }, bg300: { backgroundColor: '#fdba7470' }, bgSolid: { backgroundColor: '#f97316' } },
-    cyan: { text600: { color: '#0891b2' }, text500: { color: '#06b6d4' }, border: { borderColor: '#06b6d4' }, bg50: { backgroundColor: '#ecfeff' }, bg300: { backgroundColor: '#67e8f970' }, bgSolid: { backgroundColor: '#06b6d4' } },
-    pink: { text600: { color: '#db2777' }, text500: { color: '#ec4899' }, border: { borderColor: '#ec4899' }, bg50: { backgroundColor: '#fdf2f8' }, bg300: { backgroundColor: '#f9a8d470' }, bgSolid: { backgroundColor: '#ec4899' } },
-    yellow: { text600: { color: '#ca8a04' }, text500: { color: '#eab308' }, border: { borderColor: '#eab308' }, bg50: { backgroundColor: '#fefce8' }, bg300: { backgroundColor: '#fde04770' }, bgSolid: { backgroundColor: '#eab308' } },
-    lime: { text600: { color: '#65a30d' }, text500: { color: '#84cc16' }, border: { borderColor: '#84cc16' }, bg50: { backgroundColor: '#f7fee7' }, bg300: { backgroundColor: '#bef26470' }, bgSolid: { backgroundColor: '#84cc16' } },
+    red: { text600: '#e11d48', text500: '#f43f5e', border: '#f43f5e', bg50: '#fff1f2', bg300: '#fda4af', bgSolid: '#f43f5e' },
+    gray: { text600: '#4b5563', text500: '#6b7280', border: '#6b7280', bg50: '#f9fafb', bg300: '#e5e7eb', bgSolid: '#6b7280' },
+    blue: { text600: '#2563eb', text500: '#3b82f6', border: '#3b82f6', bg50: '#eff6ff', bg300: '#93c5fd', bgSolid: '#3b82f6' },
+    green: { text600: '#16a34a', text500: '#22c55e', border: '#22c55e', bg50: '#f0fdf4', bg300: '#86efac', bgSolid: '#22c55e' },
+    purple: { text600: '#9333ea', text500: '#a855f7', border: '#a855f7', bg50: '#faf5ff', bg300: '#d8b4fe', bgSolid: '#a855f7' },
+    orange: { text600: '#ea580c', text500: '#f97316', border: '#f97316', bg50: '#fff7ed', bg300: '#fdba74', bgSolid: '#f97316' },
+    cyan: { text600: '#0891b2', text500: '#06b6d4', border: '#06b6d4', bg50: '#ecfeff', bg300: '#67e8f9', bgSolid: '#06b6d4' },
+    pink: { text600: '#db2777', text500: '#ec4899', border: '#ec4899', bg50: '#fdf2f8', bg300: '#f9a8d4', bgSolid: '#ec4899' },
+    yellow: { text600: '#ca8a04', text500: '#eab308', border: '#eab308', bg50: '#fefce8', bg300: '#fde047', bgSolid: '#eab308' },
+    lime: { text600: '#65a30d', text500: '#84cc16', border: '#84cc16', bg50: '#f7fee7', bg300: '#bef264', bgSolid: '#84cc16' },
 };
 
 // Bengali numbers helper
@@ -50,6 +50,13 @@ const toBengaliNumber = (num: number) => {
         .map((digit) => bengaliDigits[parseInt(digit, 10)])
         .join('');
 };
+
+const MockQRCode = () => (
+    <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }}>
+        <path fill="#000" d="M5,5 h30 v30 h-30 z M10,10 h20 v20 h-20 z M65,5 h30 v30 h-30 z M70,10 h20 v20 h-20 z M5,65 h30 v30 h-30 z M10,70 h20 v20 h-20 z" />
+        <path fill="#000" d="M45,5 h10 v10 h-10 z M45,20 h10 v10 h-10 z M45,35 h10 v10 h-10 z M45,50 h10 v10 h-10 z M5,45 h10 v10 h-10 z M20,45 h10 v10 h-10 z M5,55 h10 v10 h-10 z M25,55 h10 v10 h-10 z M65,45 h10 v10 h-10 z M80,45 h10 v10 h-10 z M65,55 h10 v10 h-10 z M85,55 h10 v10 h-10 z M45,65 h10 v10 h-10 z M45,85 h10 v10 h-10 z M65,65 h10 v10 h-10 z M80,75 h10 v10 h-10 z M60,85 h10 v10 h-10 z M85,85 h10 v10 h-10 z M55,55 h15 v15 h-15 z M35,25 h10 v10 h-10 z M25,35 h10 v10 h-10 z" />
+    </svg>
+);
 
 export default function OMRSheet({
     color = 'red',
@@ -63,12 +70,6 @@ export default function OMRSheet({
 }: OMRSheetProps) {
     const theme = colorMaps[color];
 
-    // Calculate grid layout (fixed to max 4 columns)
-    // 100 -> 4 columns of 25
-    // 80 -> 4 columns of 20
-    // 60 -> 3 columns of 20
-    // 40 -> 2 columns of 20
-    // Reference for sizing: column typically holds up to 25 rows
     const questionsPerColumn = questionCount === 100 ? 25 : 20;
     const numColumns = Math.ceil(questionCount / questionsPerColumn);
 
@@ -79,236 +80,402 @@ export default function OMRSheet({
     });
 
     return (
-        <div className="p-5 select-none w-max mx-auto shadow-md border rounded-lg overflow-x-auto" style={{ backgroundColor: '#ffffff' }}>
-            <div className="relative w-[750px] mx-auto" id="omr-printable-area" style={{ backgroundColor: '#ffffff', color: '#000000' }}>
+        <div style={{ backgroundColor: '#ffffff', padding: '20px', userSelect: 'none', width: 'max-content', margin: '0 auto', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', border: '1px solid #e5e7eb', borderRadius: '8px', overflowX: 'auto' }}>
+            <div id="omr-printable-area" style={{ position: 'relative', width: '750px', margin: '0 auto', backgroundColor: '#ffffff', color: '#000000', fontFamily: 'sans-serif' }}>
                 {/* Markers */}
-                <div className="absolute top-0 left-0 w-10 h-10 pointer-events-none opacity-0" style={{ backgroundColor: '#000000' }}></div>
-                <div className="absolute top-0 right-0 w-10 h-10 pointer-events-none opacity-0" style={{ backgroundColor: '#000000' }}></div>
-                <div className="absolute bottom-0 left-0 w-10 h-10 pointer-events-none opacity-0" style={{ backgroundColor: '#000000' }}></div>
-                <div className="absolute bottom-0 right-0 w-10 h-10 pointer-events-none opacity-0" style={{ backgroundColor: '#000000' }}></div>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                </div>
+                <div style={{ position: 'absolute', top: 0, right: 0, width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                    <div style={{ position: 'absolute', bottom: '0', left: '0', width: '16px', height: '16px', backgroundColor: '#000000' }}></div>
+                </div>
+                {/* Bottom makers absent in images initially, let's keep them zero opacity or standard if they need timing */}
 
                 {/* Top Warning Box */}
-                <div className="absolute flex items-center justify-center top-0 left-1/2 -translate-x-1/2 mt-1">
-                    <div className="w-[660px] h-10 flex flex-col items-center pt-0.5" style={theme.bg50}>
-                        <div className="text-center text-sm font-bold" style={theme.text600}>এই বক্সে কোনো দাগ দেয়া যাবে না।</div>
-                        <div className="flex justify-center items-center h-5">
-                            <div className="flex flex-wrap gap-1 items-center">
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                {Array.from({ length: 3 }).map((_, i) => <div key={`b1-${i}`} className="w-3 h-4" style={{ backgroundColor: '#000000' }}></div>)}
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                {Array.from({ length: 6 }).map((_, i) => <div key={`b2-${i}`} className="w-3 h-4" style={{ backgroundColor: '#000000' }}></div>)}
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                <div className="w-3 h-4" style={{ backgroundColor: '#000000' }}></div>
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                <div className="w-3 h-4" style={{ backgroundColor: '#000000' }}></div>
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                <div className="w-4 h-4 border rounded-full" style={{ borderColor: '#000000', backgroundColor: '#ffffff' }}></div>
-                                {Array.from({ length: 3 }).map((_, i) => <div key={`b3-${i}`} className="w-3 h-4" style={{ backgroundColor: '#000000' }}></div>)}
+                <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '4px' }}>
+                    <div style={{ width: '660px', height: '36px', backgroundColor: theme.bg50, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '2px' }}>
+                        <div style={{ textAlign: 'center', fontSize: '13px', fontWeight: 'bold', color: theme.text600 }}>এই বক্সে কোনো দাগ দেয়া যাবে না।</div>
+                        <div style={{ height: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-2px' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center' }}>
+                                <div style={{ width: '14px', height: '14px', border: '1px solid #000000', borderRadius: '50%', backgroundColor: '#ffffff', boxSizing: 'border-box' }}></div>
+                                <div style={{ width: '14px', height: '14px', border: '1px solid #000000', borderRadius: '50%', backgroundColor: '#ffffff', boxSizing: 'border-box' }}></div>
+                                {Array.from({ length: 9 }).map((_, i) => <div key={`b2-${i}`} style={{ width: '10px', height: '14px', backgroundColor: '#000000' }}></div>)}
+                                <div style={{ width: '14px', height: '14px', border: '1px solid #000000', borderRadius: '50%', backgroundColor: '#ffffff', boxSizing: 'border-box' }}></div>
+                                <div style={{ width: '10px', height: '14px', backgroundColor: '#000000' }}></div>
+                                <div style={{ width: '14px', height: '14px', border: '1px solid #000000', borderRadius: '50%', backgroundColor: '#ffffff', boxSizing: 'border-box' }}></div>
+                                <div style={{ width: '10px', height: '14px', backgroundColor: '#000000' }}></div>
+                                <div style={{ width: '14px', height: '14px', border: '1px solid #000000', borderRadius: '50%', backgroundColor: '#ffffff', boxSizing: 'border-box' }}></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Side Timing Marks (Dummy placeholders) */}
-                <div className="absolute flex items-center justify-center left-0 top-1/2 -translate-x-[14px] rotate-[90deg] opacity-20">
-                    <div className="flex flex-row">
-                        {Array.from({ length: 5 }).map((_, i) => <div key={`lm-${i}`} className="w-3 h-6 mx-[2px]" style={{ backgroundColor: '#000000' }}></div>)}
-                    </div>
-                </div>
-                <div className="absolute flex items-center justify-center right-0 top-1/2 translate-x-[14px] rotate-[90deg] opacity-20">
-                    <div className="flex flex-row">
-                        {Array.from({ length: 5 }).map((_, i) => <div key={`rm-${i}`} className="w-3 h-6 mx-[2px]" style={{ backgroundColor: '#000000' }}></div>)}
-                    </div>
-                </div>
+                <div style={{ height: '50px' }}></div> {/* Header Clearance */}
+                <div style={{ margin: '16px 40px 0 40px', paddingBottom: '40px' }}>
 
-                <div className="h-10"></div> {/* Header Clearance */}
-
-                <div className="mx-10 mt-4 pb-10">
-                    <div className="w-[664px] mx-auto">
-                        {/* Header / Institution Name */}
-                        <div className={`${headerSize === 'Big' ? 'h-[72px]' : 'h-[50px]'} overflow-hidden flex items-center justify-center`}>
-                            <div className="leading-tight text-center">
-                                <p className={`font-bold line-clamp-1`} style={{ fontSize: `${titleSize}px` }}>
+                    {/* Header / Institution Name */}
+                    {!(infoType === 'Manual' && headerSize === 'Small') && (
+                        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ lineHeight: '1.25', textAlign: 'center' }}>
+                                <p style={{ fontWeight: 'bold', fontSize: `${titleSize}px`, margin: 0 }}>
                                     {institutionName}
                                 </p>
-                                <p className={`font-bold line-clamp-1`} style={{ fontSize: `${addressSize}px`, color: '#374151' }}>
+                                <p style={{ fontWeight: 'bold', fontSize: `${addressSize}px`, color: '#000', margin: 0 }}>
                                     {address}
                                 </p>
                             </div>
                         </div>
-
-                        {/* Student Info Area */}
-                        <div className="my-3">
-                            <div className="flex justify-between">
-
-                                {infoType === 'Digital' ? (
-                                    <div className="flex gap-2.5">
-                                        {/* Class */}
-                                        <div className="w-[90px]">
-                                            <div className="border pb-4 h-[286px]" style={theme.border}>
-                                                <div className="border-b text-center font-bold text-sm" style={theme.border}>শ্রেণি</div>
-                                                <div className="grid grid-cols-3">
-                                                    <div className="border-r" style={theme.border}></div>
-                                                    <div className="border-r text-xs text-center" style={theme.border}>
-                                                        <div className="flex justify-center items-center border-b h-[25px]" style={theme.border}></div>
-                                                        {[6, 7, 8, 9, 10, 11, 12].map(cls => (
-                                                            <div key={`cls-${cls}`} className="flex justify-center items-center border-b h-[25px]" style={theme.border}>
-                                                                <span className="border rounded-full h-[18px] w-[18px] flex justify-center items-center" style={{ borderColor: 'rgba(0,0,0,0.6)' }}>{toBengaliNumber(cls)}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <div></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Roll Number */}
-                                        <div className="border h-[286px]" style={{ width: '182px', ...theme.border }}>
-                                            <div className="border-b text-center font-bold text-sm" style={theme.border}>রোল নম্বর</div>
-                                            <div className="grid grid-cols-6">
-                                                {Array.from({ length: 6 }).map((_, i) => (
-                                                    <div key={`rth-${i}`} className={`border-r h-[25px] ${i === 5 ? 'border-r-0' : ''}`} style={theme.border}></div>
-                                                ))}
-                                            </div>
-                                            <div className="grid grid-cols-6 border-t" style={theme.border}>
-                                                {Array.from({ length: 6 }).map((_, col) => (
-                                                    <div key={`rc-${col}`} className={`border-r text-center text-xs ${col === 5 ? 'border-r-0' : ''}`} style={{ ...theme.border, ...(col % 2 === 0 ? theme.bg300 : {}) }}>
-                                                        {Array.from({ length: 10 }).map((_, num) => (
-                                                            <div key={`rn-${col}-${num}`} className="flex justify-center items-center border-b h-[24px]" style={theme.border}>
-                                                                <div className="border rounded-full w-[18px] h-[18px] flex items-center justify-center" style={{ borderColor: 'rgba(0,0,0,0.6)' }}>
-                                                                    {toBengaliNumber(num)}
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Subject Code */}
-                                        <div className="border h-[286px]" style={{ width: '92px', ...theme.border }}>
-                                            <div className="border-b text-center font-bold text-sm" style={theme.border}>বিষয় কোড</div>
-                                            <div className="grid grid-cols-3">
-                                                {Array.from({ length: 3 }).map((_, i) => (
-                                                    <div key={`sth-${i}`} className={`border-r h-[25px] ${i === 2 ? 'border-r-0' : ''}`} style={theme.border}></div>
-                                                ))}
-                                            </div>
-                                            <div className="grid grid-cols-3 border-t" style={theme.border}>
-                                                {Array.from({ length: 3 }).map((_, col) => (
-                                                    <div key={`sc-${col}`} className={`border-r text-center text-xs ${col === 2 ? 'border-r-0' : ''}`} style={{ ...theme.border, ...(col % 2 !== 0 ? theme.bg300 : {}) }}>
-                                                        {Array.from({ length: 10 }).map((_, num) => (
-                                                            <div key={`sn-${col}-${num}`} className="flex justify-center items-center border-b h-[24px]" style={theme.border}>
-                                                                <div className="border rounded-full w-[18px] h-[18px] flex items-center justify-center" style={{ borderColor: 'rgba(0,0,0,0.6)' }}>
-                                                                    {toBengaliNumber(num)}
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Set Code */}
-                                        <div className="w-[90px]">
-                                            <div className="border pb-4 h-[286px]" style={theme.border}>
-                                                <div className="border-b text-center font-bold text-sm" style={theme.border}>সেট কোড</div>
-                                                <div className="grid grid-cols-3">
-                                                    <div className="border-r" style={theme.border}></div>
-                                                    <div className="border-r text-xs text-center" style={theme.border}>
-                                                        <div className="flex justify-center items-center border-b h-[25px]" style={theme.border}></div>
-                                                        {['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ'].map(set => (
-                                                            <div key={`set-${set}`} className="flex justify-center items-center border-b h-[25px]" style={theme.border}>
-                                                                <span className="border rounded-full h-[18px] w-[18px] flex justify-center items-center" style={{ borderColor: 'rgba(0,0,0,0.6)' }}>{set}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <div></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex-1 flex flex-col gap-4 my-2 mr-6 h-[286px] justify-center pt-2">
-                                        <div className="flex-1 space-y-4 w-full px-2">
-                                            <div className="border p-3 pb-8 rounded" style={{ backgroundColor: 'rgba(249,250,251,0.3)', ...theme.border }}>
-                                                <strong className="text-sm" style={{ color: '#374151' }}>শিক্ষার্থীর নাম:</strong>
-                                                <div className="border-b border-dashed mt-8 mx-2" style={theme.border}></div>
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <div className="flex-1 border p-3 pb-8 rounded" style={{ backgroundColor: 'rgba(249,250,251,0.3)', ...theme.border }}>
-                                                    <strong className="text-sm" style={{ color: '#374151' }}>রোল নম্বর:</strong>
-                                                    <div className="border-b border-dashed mt-6 mx-2" style={theme.border}></div>
-                                                </div>
-                                                <div className="flex-1 border p-3 pb-8 rounded" style={{ backgroundColor: 'rgba(249,250,251,0.3)', ...theme.border }}>
-                                                    <strong className="text-sm" style={{ color: '#374151' }}>শ্রেণি / বিভাগ:</strong>
-                                                    <div className="border-b border-dashed mt-6 mx-2" style={theme.border}></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Instructions */}
-                                <div className="w-[168px]">
-                                    <div className="flex-1 h-full flex flex-col justify-between">
-                                        <div>
-                                            <div className="text-center py-1" style={{ color: '#ffffff', ...theme.bgSolid }}>
-                                                <p className="text-[12px] font-bold">নিয়মাবলী</p>
-                                            </div>
-                                            <div className="text-[11px] leading-tight text-justify mt-2 space-y-1 px-1">
-                                                <p>১। বৃত্তাকার ঘরগুলো এমন ভাবে ভরাট করতে হবে যাতে ভেতরের লেখাটি দেখা না যায়।</p>
-                                                <p>২। উত্তরপত্রে অবাঞ্চিত দাগ দেয়া যাবেনা।</p>
-                                                <p>৩। উত্তরপত্র ভাজ করা যাবেনা।</p>
-                                                <p>৪। সেট কোডবিহীন উত্তরপত্র বাতিল হবে।</p>
-                                            </div>
-                                        </div>
-                                        <div className="border flex-1 min-h-[60px] relative mt-auto mb-0 mx-1" style={theme.border}>
-                                            <p className="absolute bottom-2 text-xs text-center w-full">কক্ষ পরিদর্শকের স্বাক্ষর<br />তারিখসহ</p>
-                                        </div>
-                                    </div>
-                                </div>
-
+                    )}
+                    {(infoType === 'Manual' && headerSize === 'Small') && (
+                        <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ lineHeight: '1.25', textAlign: 'center' }}>
+                                <p style={{ fontWeight: 'bold', fontSize: `22px`, margin: 0 }}>
+                                    {institutionName}
+                                </p>
                             </div>
                         </div>
+                    )}
 
-                        <p className="text-center font-bold mb-3 mt-4 text-[15px]">বহুনির্বাচনি অভিক্ষার উত্তরপত্র</p>
+                    {/* Student Info Area */}
+                    <div style={{ margin: '12px 0' }}>
+                        {infoType === 'Digital' ? (
+                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'space-between' }}>
+                                {/* Class */}
+                                <div style={{ width: '90px' }}>
+                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '286px', boxSizing: 'border-box' }}>
+                                        <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>শ্রেণি</div>
+                                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                            <tbody>
+                                                {[{ num: null }, ...[6, 7, 8, 9, 10, 11, 12].map(n => ({ num: n }))].map((item, idx) => (
+                                                    <tr key={`cls-r-${idx}`}>
+                                                        <td style={{ borderRight: `1px solid ${theme.border}`, width: '33.33%' }}></td>
+                                                        <td style={{ borderRight: `1px solid ${theme.border}`, borderBottom: `1px solid ${theme.border}`, width: '33.33%', height: '25px', textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            {item.num && (
+                                                                <span style={{ border: '1px solid rgba(0,0,0,0.6)', borderRadius: '50%', height: '18px', width: '18px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', fontSize: '12px' }}>
+                                                                    {toBengaliNumber(item.num)}
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                        <td style={{ width: '33.33%' }}></td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                        {/* Questions Grid */}
-                        <div className="flex gap-2 justify-center">
-                            {columns.map((columnQuestions, colIdx) => (
-                                <div key={`col-${colIdx}`} className="w-[160px] text-xs">
-                                    {/* Header */}
-                                    <div className="flex border font-bold h-[25px]" style={theme.border}>
-                                        <div className="w-[38px] text-center border-r py-1 flex items-center justify-center" style={theme.border}>প্রশ্ন</div>
-                                        <div className="flex-1 text-center py-1 flex items-center justify-center">উত্তর</div>
+                                {/* Roll Number */}
+                                <div style={{ border: `1px solid ${theme.border}`, width: '182px', height: '286px', boxSizing: 'border-box' }}>
+                                    <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>রোল নম্বর</div>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', height: '25px' }}>
+                                        <tbody>
+                                            <tr>
+                                                {Array.from({ length: 6 }).map((_, i) => (
+                                                    <td key={`rth-${i}`} style={{ borderRight: i === 5 ? 'none' : `1px solid ${theme.border}` }}></td>
+                                                ))}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', borderTop: `1px solid ${theme.border}` }}>
+                                        <tbody>
+                                            {Array.from({ length: 10 }).map((_, num) => (
+                                                <tr key={`rr-${num}`}>
+                                                    {Array.from({ length: 6 }).map((_, col) => (
+                                                        <td key={`rc-${col}-${num}`} style={{ borderRight: col === 5 ? 'none' : `1px solid ${theme.border}`, borderBottom: `1px solid ${theme.border}`, height: '24px', textAlign: 'center', verticalAlign: 'middle', backgroundColor: col % 2 === 0 ? theme.bg300 : 'transparent' }}>
+                                                            <div style={{ border: '1px solid rgba(0,0,0,0.6)', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', margin: '0 auto' }}>
+                                                                {toBengaliNumber(num)}
+                                                            </div>
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Subject Code */}
+                                <div style={{ border: `1px solid ${theme.border}`, width: '92px', height: '286px', boxSizing: 'border-box' }}>
+                                    <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>বিষয় কোড</div>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', height: '25px' }}>
+                                        <tbody>
+                                            <tr>
+                                                {Array.from({ length: 3 }).map((_, i) => (
+                                                    <td key={`sth-${i}`} style={{ borderRight: i === 2 ? 'none' : `1px solid ${theme.border}` }}></td>
+                                                ))}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse', borderTop: `1px solid ${theme.border}` }}>
+                                        <tbody>
+                                            {Array.from({ length: 10 }).map((_, num) => (
+                                                <tr key={`sr-${num}`}>
+                                                    {Array.from({ length: 3 }).map((_, col) => (
+                                                        <td key={`sc-${col}-${num}`} style={{ borderRight: col === 2 ? 'none' : `1px solid ${theme.border}`, borderBottom: `1px solid ${theme.border}`, height: '24px', textAlign: 'center', verticalAlign: 'middle', backgroundColor: col % 2 !== 0 ? theme.bg300 : 'transparent' }}>
+                                                            <div style={{ border: '1px solid rgba(0,0,0,0.6)', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', margin: '0 auto' }}>
+                                                                {toBengaliNumber(num)}
+                                                            </div>
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Set Code */}
+                                <div style={{ width: '90px' }}>
+                                    <div style={{ border: `1px solid ${theme.border}`, paddingBottom: '16px', height: '286px', boxSizing: 'border-box' }}>
+                                        <div style={{ borderBottom: `1px solid ${theme.border}`, textAlign: 'center', fontWeight: 'bold', fontSize: '14px', padding: '2px 0', backgroundColor: theme.bg50 }}>সেট কোড</div>
+                                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                            <tbody>
+                                                {[{ set: null }, ...['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ'].map(s => ({ set: s }))].map((item, idx) => (
+                                                    <tr key={`set-r-${idx}`}>
+                                                        <td style={{ borderRight: `1px solid ${theme.border}`, width: '33.33%' }}></td>
+                                                        <td style={{ borderRight: `1px solid ${theme.border}`, borderBottom: `1px solid ${theme.border}`, width: '33.33%', height: '25px', textAlign: 'center', verticalAlign: 'middle' }}>
+                                                            {item.set && (
+                                                                <span style={{ border: '1px solid rgba(0,0,0,0.6)', borderRadius: '50%', height: '18px', width: '18px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', fontSize: '11px' }}>
+                                                                    {item.set}
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                        <td style={{ width: '33.33%' }}></td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                {/* Instructions */}
+                                <div style={{ width: '168px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '286px' }}>
+                                    <div>
+                                        <div style={{ backgroundColor: theme.bgSolid, color: '#ffffff', textAlign: 'center', padding: '4px 0' }}>
+                                            <p style={{ fontSize: '12px', fontWeight: 'bold', margin: 0 }}>নিয়মাবলী</p>
+                                        </div>
+                                        <div style={{ fontSize: '11px', lineHeight: '1.2', textAlign: 'justify', marginTop: '8px', padding: '0 4px' }}>
+                                            <p style={{ margin: '0 0 4px 0' }}>১। বৃত্তাকার ঘরগুলো এমন ভাবে ভরাট করতে হবে যাতে ভেতরের লেখাটি দেখা না যায়।</p>
+                                            <p style={{ margin: '0 0 4px 0' }}>২। উত্তরপত্রে অবাঞ্চিত দাগ দেয়া যাবেনা।</p>
+                                            <p style={{ margin: '0 0 4px 0' }}>৩। উত্তরপত্র ভাজ করা যাবেনা।</p>
+                                            <p style={{ margin: '0 0 4px 0' }}>৪। সেট কোডবিহীন উত্তরপত্র বাতিল হবে।</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ border: `1px solid ${theme.border}`, flex: 1, minHeight: '60px', position: 'relative', marginTop: 'auto', marginBottom: 0, marginLeft: '4px', marginRight: '4px' }}>
+                                        <p style={{ position: 'absolute', bottom: '8px', width: '100%', textAlign: 'center', fontSize: '12px', margin: 0 }}>কক্ষ পরিদর্শকের স্বাক্ষর<br />তারিখসহ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            headerSize === 'Small' ? (
+                                <div style={{ width: '100%' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                        {/* Left Side: Exam Types */}
+                                        <div style={{ flex: 1, paddingLeft: '8px', paddingTop: '8px' }}>
+                                            <div style={{ display: 'flex', gap: '32px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <div style={{ width: '20px', height: '20px', border: `2px solid ${theme.border}`, boxSizing: 'border-box' }}></div>
+                                                        <span style={{ fontWeight: 'bold', fontSize: '15px' }}>অর্ধ-বার্ষিক পরীক্ষা</span>
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <div style={{ width: '20px', height: '20px', border: `2px solid ${theme.border}`, boxSizing: 'border-box' }}></div>
+                                                        <span style={{ fontWeight: 'bold', fontSize: '15px' }}>বার্ষিক পরীক্ষা</span>
+                                                    </div>
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <div style={{ width: '20px', height: '20px', border: `2px solid ${theme.border}`, boxSizing: 'border-box' }}></div>
+                                                        <span style={{ fontWeight: 'bold', fontSize: '15px' }}>মডেল টেস্ট পরীক্ষা</span>
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <div style={{ width: '20px', height: '20px', border: `2px solid ${theme.border}`, boxSizing: 'border-box' }}></div>
+                                                        <span style={{ fontWeight: 'bold', fontSize: '15px' }}>..................... পরীক্ষা</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Right Side: Rules & QR */}
+                                        <div style={{ display: 'flex', border: `1px solid ${theme.border}`, width: '280px', height: '70px' }}>
+                                            <div style={{ width: '20px', backgroundColor: theme.bgSolid, color: '#ffffff', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: '11px', fontWeight: 'bold' }}>নিয়মাবলী</span>
+                                            </div>
+                                            <div style={{ padding: '4px', fontSize: '10px', flex: 1, lineHeight: '1.2' }}>
+                                                <p style={{ margin: '0 0 2px 0' }}>১। বৃত্তাকার ঘরগুলো এমন ভাবে ভরাট করতে হবে যাতে ভেতরের লেখাটি দেখা না যায়।</p>
+                                                <p style={{ margin: '0 0 2px 0' }}>২। উত্তরপত্রে কোন অবাঞ্ছিত দাগ দেয়া যাবেনা।</p>
+                                                <p style={{ margin: '0 0 2px 0' }}>৩। উত্তরপত্র কোন ভাবেই ভাজ করা যাবেনা।</p>
+                                                <p style={{ margin: '0' }}>৪। সেট কোড না ভরাট করলে উত্তরপত্র বাতিল হবে।</p>
+                                            </div>
+                                            <div style={{ borderLeft: `1px solid ${theme.border}`, padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px' }}>
+                                                <MockQRCode />
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {/* Rows */}
-                                    {columnQuestions.map((qNum) => (
-                                        <div key={`q-${qNum}`} className="flex mt-[1px] border w-[160px] h-[22px]" style={theme.border}>
-                                            <div className="w-[38px] text-center border-r text-xs flex items-center justify-center" style={{ backgroundColor: 'rgba(249,250,251,0.5)', ...theme.border }}>
-                                                {toBengaliNumber(qNum)}
-                                            </div>
-                                            <div className="text-center flex-1 grid grid-cols-4">
-                                                {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
-                                                    <div
-                                                        key={`opt-${qNum}-${optIdx}`}
-                                                        className={`flex justify-center items-center ${optIdx < 3 ? 'border-r' : ''}`}
-                                                        style={{ ...(optIdx < 3 ? theme.border : {}), ...(optIdx === 0 || optIdx === 2 ? theme.bg300 : {}) }}
-                                                    >
-                                                        <p className="border rounded-full w-[17px] h-[17px] text-[11px] flex items-center justify-center leading-none pb-[1px]" style={{ borderColor: 'rgba(0,0,0,0.6)', color: '#1f2937' }}>
-                                                            {opt}
-                                                        </p>
-                                                    </div>
+                                    {/* Set Code Box */}
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+                                        <div style={{ border: `1px solid ${theme.border}`, display: 'flex', alignItems: 'center', width: '280px', height: '30px' }}>
+                                            <div style={{ flex: 1, textAlign: 'center', fontWeight: 'bold', fontSize: '14px' }}>প্রশ্নের সেট কোড</div>
+                                            <div style={{ display: 'flex', gap: '12px', padding: '0 12px', borderLeft: `1px solid ${theme.border}`, height: '100%', alignItems: 'center' }}>
+                                                {['ক', 'খ', 'গ', 'ঘ'].map(opt => (
+                                                    <div key={opt} style={{ border: `1px solid ${theme.border}`, borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', color: theme.text600 }}>{opt}</div>
                                                 ))}
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
+                                    </div>
 
+                                    {/* Student Info Lines */}
+                                    <div style={{ borderTop: `2px solid ${theme.border}`, borderBottom: `2px solid ${theme.border}`, padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                        <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-end' }}>
+                                            <div style={{ flex: 1.5, display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '8px' }}>নাম:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                            <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '8px' }}>রোল:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                        </div>
+                                        <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-end' }}>
+                                            <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '8px' }}>শ্রেণি:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                            <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '8px' }}>বিষয়:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                            <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '16px', marginRight: '8px' }}>বিভাগ:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div style={{ width: '100%', display: 'flex', gap: '16px', marginBottom: '12px' }}>
+                                    {/* Left Box: পরীক্ষার্থীর তথ্য */}
+                                    <div style={{ flex: 1, border: `1px solid ${theme.border}`, padding: '16px', position: 'relative' }}>
+                                        <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '16px', marginBottom: '20px' }}>
+                                            <span style={{ display: 'inline-block', borderBottom: `1px solid ${theme.text600}`, paddingBottom: '2px' }}>পরীক্ষার্থীর তথ্য</span>
+                                        </div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>নাম:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+                                                <div style={{ flex: 1.5, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>শ্রেণি:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                                <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>রোল:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                                <div style={{ flex: 1.5, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>বিভাগ:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+                                                <div style={{ flex: 1.5, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>বিষয়:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                                <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>পত্র:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                                <div style={{ flex: 1.5, display: 'flex', alignItems: 'flex-end' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>বিষয় কোড:</span>
+                                                    <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                                </div>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '15px', marginRight: '8px' }}>তারিখ:</span>
+                                                <div style={{ flex: 1, borderBottom: `1px dashed ${theme.border}`, height: '1px', marginBottom: '4px' }}></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Right Flow: Rules, QR, Signature */}
+                                    <div style={{ width: '200px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        <div>
+                                            <div style={{ backgroundColor: theme.text500, color: '#ffffff', textAlign: 'center', padding: '4px 0' }}>
+                                                <span style={{ fontSize: '13px', fontWeight: 'bold' }}>নিয়মাবলী</span>
+                                            </div>
+                                            <div style={{ fontSize: '10px', lineHeight: '1.3', marginTop: '6px', textAlign: 'justify' }}>
+                                                <p style={{ margin: '0 0 4px 0' }}>১। বৃত্তাকার ঘরগুলো এমন ভাবে ভরাট করতে হবে যাতে ভেতরের লেখাটি দেখা না যায়।</p>
+                                                <p style={{ margin: '0 0 4px 0' }}>২। উত্তরপত্রে অবাঞ্চিত দাগ দেয়া যাবেনা।</p>
+                                                <p style={{ margin: '0 0 4px 0' }}>৩। উত্তরপত্র ভাজ করা যাবেনা।</p>
+                                                <p style={{ margin: '0 0 4px 0' }}>৪। সেট কোডবিহীন উত্তরপত্র বাতিল হবে।</p>
+                                            </div>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <div style={{ width: '60px', height: '60px', border: '1px solid #000', padding: '2px' }}>
+                                                <MockQRCode />
+                                            </div>
+                                        </div>
+                                        <div style={{ border: `1px solid ${theme.border}`, flex: 1, minHeight: '60px', position: 'relative' }}>
+                                            <div style={{ position: 'absolute', bottom: '8px', width: '100%', textAlign: 'center', fontSize: '11px', fontWeight: 'bold' }}>
+                                                কক্ষ পরিদর্শকের স্বাক্ষর তারিখসহ
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        )}
                     </div>
+
+                    <p style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '12px', marginTop: '16px', fontSize: '15px' }}>বহুনির্বাচনি অভিক্ষার উত্তরপত্র</p>
+
+                    {/* Questions Grid using Tables */}
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                        {columns.map((columnQuestions, colIdx) => (
+                            <div key={`col-${colIdx}`} style={{ width: '160px', fontSize: '12px' }}>
+                                {/* Header */}
+                                <table style={{ width: '100%', borderCollapse: 'collapse', border: `1px solid ${theme.border}`, marginBottom: '1px' }}>
+                                    <tbody>
+                                        <tr style={{ height: '25px', fontWeight: 'bold' }}>
+                                            <td style={{ width: '38px', textAlign: 'center', borderRight: `1px solid ${theme.border}`, verticalAlign: 'middle' }}>প্রশ্ন</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>উত্তর</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                {/* Rows */}
+                                <table style={{ width: '100%', borderCollapse: 'collapse', border: `1px solid ${theme.border}` }}>
+                                    <tbody>
+                                        {columnQuestions.map((qNum) => (
+                                            <tr key={`q-${qNum}`} style={{ height: '22px' }}>
+                                                <td style={{ width: '38px', textAlign: 'center', borderRight: `1px solid ${theme.border}`, borderBottom: `1px solid ${theme.border}`, backgroundColor: 'rgba(249,250,251,0.5)', verticalAlign: 'middle' }}>
+                                                    {toBengaliNumber(qNum)}
+                                                </td>
+                                                {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
+                                                    <td
+                                                        key={`opt-${qNum}-${optIdx}`}
+                                                        style={{
+                                                            borderBottom: `1px solid ${theme.border}`,
+                                                            borderRight: optIdx < 3 ? `1px solid ${theme.border}` : 'none',
+                                                            backgroundColor: optIdx === 0 || optIdx === 2 ? theme.bg300 : 'transparent',
+                                                            textAlign: 'center',
+                                                            verticalAlign: 'middle'
+                                                        }}
+                                                    >
+                                                        <div style={{ margin: '0 auto', border: '1px solid rgba(0,0,0,0.6)', borderRadius: '50%', width: '17px', height: '17px', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1f2937', boxSizing: 'border-box' }}>
+                                                            {opt}
+                                                        </div>
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ))}
+                    </div>
+
                 </div>
             </div>
         </div>

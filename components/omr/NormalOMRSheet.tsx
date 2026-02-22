@@ -40,101 +40,116 @@ export default function NormalOMRSheet({
     });
 
     return (
-        <div className="bg-white p-5 select-none w-max mx-auto overflow-x-auto text-sm text-black">
-            <div id="omr-printable-area" className="bg-white px-2 py-4">
-                <div style={{ maxWidth: '493px' }} className="mx-auto">
-                    <div className="flex gap-2 justify-center items-center pt-10">
-                        <div className="truncate w-full">
-                            <h1 className="text-center font-bold" style={{ fontSize: `${titleSize}px` }}>
-                                {institutionName}
-                            </h1>
-                            <p className="text-center" style={{ fontSize: `${addressSize}px`, color: '#4b5563' }}>{address}</p>
-                        </div>
+        <div style={{ backgroundColor: '#ffffff', padding: '20px', userSelect: 'none', width: 'fit-content', margin: '0 auto', fontSize: '14px', color: '#000000', overflowX: 'auto' }}>
+            <div id="omr-printable-area" style={{ backgroundColor: '#ffffff', padding: '16px 8px', width: '550px', margin: '0 auto' }}>
+                <div style={{ maxWidth: '493px', margin: '0 auto' }}>
+                    <div style={{ paddingTop: '40px', textAlign: 'center', width: '100%' }}>
+                        <h1 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: `${titleSize}px`, margin: 0, padding: 0 }}>
+                            {institutionName}
+                        </h1>
+                        <p style={{ textAlign: 'center', fontSize: `${addressSize}px`, color: '#4b5563', margin: 0, padding: 0 }}>{address}</p>
                     </div>
-                    <div className="border-b mt-3 mx-5" style={{ borderColor: '#9ca3af' }}></div>
-                    <div className="border-b my-1 mx-14" style={{ borderColor: '#9ca3af' }}></div>
-                    <div className="mt-2 mb-4 py-2 flex gap-2 items-center text-[15px]">
-                        <div className="flex-1 space-y-3">
-                            <div className="flex-1 flex gap-1 items-baseline">
-                                <span>নাম:</span>
-                                <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
+
+                    <div style={{ borderBottom: '1px solid #9ca3af', marginTop: '12px', marginLeft: '20px', marginRight: '20px' }}></div>
+                    <div style={{ borderBottom: '1px solid #9ca3af', marginTop: '4px', marginBottom: '4px', marginLeft: '56px', marginRight: '56px' }}></div>
+
+                    <div style={{ marginTop: '8px', marginBottom: '16px', padding: '8px 0', fontSize: '15px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                                <span style={{ marginRight: '4px' }}>নাম:</span>
+                                <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
                             </div>
-                            <div className="flex justify-center gap-4">
-                                <div className="flex-1 flex gap-1 items-baseline">
-                                    <span>শ্রেণি:</span>
-                                    <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'baseline' }}>
+                                    <span style={{ marginRight: '4px' }}>শ্রেণি:</span>
+                                    <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
                                 </div>
-                                <div className="flex-1 flex gap-1 items-baseline">
-                                    <span>সেকশন:</span>
-                                    <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
-                                </div>
-                            </div>
-                            <div className="flex justify-center gap-4">
-                                <div className="flex-1 flex gap-1 items-baseline">
-                                    <span>বিষয়:</span>
-                                    <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
-                                </div>
-                                <div className="flex-1 flex gap-1 items-baseline">
-                                    <span>পত্র:</span>
-                                    <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'baseline' }}>
+                                    <span style={{ marginRight: '4px' }}>সেকশন:</span>
+                                    <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
                                 </div>
                             </div>
-                            <div className="flex">
-                                <div className="flex-1 flex gap-1 items-baseline">
-                                    <span>রোল:</span>
-                                    <p className="flex-1 border-b border-dashed" style={{ borderColor: '#9ca3af' }}></p>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'baseline' }}>
+                                    <span style={{ marginRight: '4px' }}>বিষয়:</span>
+                                    <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
+                                </div>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'baseline' }}>
+                                    <span style={{ marginRight: '4px' }}>পত্র:</span>
+                                    <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <div style={{ flex: 1, display: 'flex', alignItems: 'baseline' }}>
+                                    <span style={{ marginRight: '4px' }}>রোল:</span>
+                                    <div style={{ flex: 1, borderBottom: '1px dashed #9ca3af', height: '20px' }}></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="border mx-auto" style={{ minWidth: '483px', borderWidth: '3px', borderColor: '#1f2937' }}>
+                <div style={{ minWidth: '483px', maxWidth: '483px', margin: '0 auto', border: '3px solid #1f2937', boxSizing: 'border-box' }}>
                     {/* Top Timing Marks */}
-                    <div className="border-b border-dashed p-1 flex justify-between items-center text-[10px]" style={{ borderColor: '#9ca3af' }}>
-                        <div className="flex items-center gap-1">
-                            <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
+                    <div style={{ borderBottom: '1px dashed #9ca3af', padding: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
                         </div>
-                        <div className="flex flex-1 justify-center gap-6 opacity-80">
+                        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', opacity: 0.8 }}>
                             {Array.from({ length: columnsCount }).map((_, i) => (
-                                <div key={`tm-${i}`} className="flex gap-2">
-                                    <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
-                                    <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
+                                <div key={`tm-${i}`} style={{ display: 'flex', margin: '0 12px' }}>
+                                    <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '8px' }}></div>
+                                    <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex items-center gap-1">
-                            <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
-                            <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
-                            <div className="h-4 w-3" style={{ backgroundColor: '#000000' }}></div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '4px' }}></div>
+                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '4px' }}></div>
+                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
                         </div>
                     </div>
 
-                    {/* OMR Grid */}
-                    <div className={`flex justify-between gap-6 px-3 py-4`}>
+                    {/* OMR Grid Using Standard HTML Tables for Perfect PDF Alignment */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 12px' }}>
                         {columns.map((columnQuestions, colIdx) => (
-                            <div key={`col-${colIdx}`} className="flex-1">
-                                {columnQuestions.map((qNum) => (
-                                    <div key={`q-${qNum}`} className="flex items-center justify-between my-2 h-6 min-w-[145px]">
-                                        <div className="text-center flex justify-end w-[25px] pr-2">
-                                            <p className="font-bold text-[15px]">{toBengaliNumber(qNum)}</p>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex justify-between items-center">
-                                                {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
-                                                    <div
-                                                        key={`opt-${qNum}-${optIdx}`}
-                                                        className="h-[22px] w-[22px] rounded-full border-[1.5px] text-center flex items-center justify-center text-[13px] leading-none pb-[1px]"
-                                                        style={{ borderColor: '#374151' }}
-                                                    >
-                                                        {opt}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            <table key={`col-${colIdx}`} style={{ flex: 1, borderCollapse: 'collapse', margin: '0 8px' }}>
+                                <tbody>
+                                    {columnQuestions.map((qNum) => (
+                                        <tr key={`q-${qNum}`} style={{ height: '28px' }}>
+                                            <td style={{ width: '30px', textAlign: 'right', paddingRight: '8px', verticalAlign: 'middle' }}>
+                                                <span style={{ fontWeight: 'bold', fontSize: '15px' }}>{toBengaliNumber(qNum)}</span>
+                                            </td>
+                                            <td style={{ verticalAlign: 'middle' }}>
+                                                <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                                                    <tbody>
+                                                        <tr>
+                                                            {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
+                                                                <td key={`opt-${qNum}-${optIdx}`} style={{ textAlign: 'center' }}>
+                                                                    <div style={{
+                                                                        height: '22px',
+                                                                        width: '22px',
+                                                                        borderRadius: '50%',
+                                                                        border: '1.5px solid #374151',
+                                                                        display: 'inline-flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        fontSize: '13px',
+                                                                        lineHeight: '1',
+                                                                        boxSizing: 'border-box'
+                                                                    }}>
+                                                                        {opt}
+                                                                    </div>
+                                                                </td>
+                                                            ))}
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         ))}
                     </div>
                 </div>
