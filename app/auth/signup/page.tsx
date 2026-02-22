@@ -46,7 +46,7 @@ export default function SignupPage() {
         response.data?.token ??
         response.data?.data?.access_token;
       if (token && typeof window !== "undefined") {
-        localStorage.setItem("optimark_token", token);
+        localStorage.setItem("mcqscanner_token", token);
       }
 
       addToast("Account created successfully!", "success");
@@ -66,7 +66,7 @@ export default function SignupPage() {
             href="/"
             className="text-xl font-bold text-[#1e3a5f] hover:opacity-90"
           >
-            OptiMark
+            MCQ Scanner
           </Link>
         </div>
       </header>
@@ -76,7 +76,7 @@ export default function SignupPage() {
           <CardHeader>
             <CardTitle>Create account</CardTitle>
             <CardDescription>
-              Get started with OptiMark in under a minute
+              Get started with MCQ Scanner in under a minute
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit} className="space-y-4">

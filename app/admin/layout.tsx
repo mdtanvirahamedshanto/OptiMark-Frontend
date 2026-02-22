@@ -17,7 +17,7 @@ export default function AdminLayout({
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("optimark_token") : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem("mcqscanner_token") : null;
     if (!token) {
       router.replace("/auth/login");
       return;
@@ -57,7 +57,7 @@ export default function AdminLayout({
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="p-4 border-b border-slate-200">
           <Link href="/admin/dashboard" className="text-xl font-bold text-[#1e3a5f]">
-            OptiMark Admin
+            MCQ Scanner Admin
           </Link>
         </div>
         <nav className="flex-1 p-4 space-y-1">
@@ -68,9 +68,8 @@ export default function AdminLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                  active ? "bg-[#1e3a5f] text-white" : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${active ? "bg-[#1e3a5f] text-white" : "text-slate-600 hover:bg-slate-100"
+                  }`}
               >
                 <Icon className="h-5 w-5" />
                 {item.label}

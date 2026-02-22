@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OptiMark - Automated OMR Grading",
+  title: "MCQ Scanner - Automated OMR Grading",
   description: "Professional OMR grading system - Upload, Scan, Result",
 };
 

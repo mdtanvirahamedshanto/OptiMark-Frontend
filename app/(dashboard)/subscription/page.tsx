@@ -44,7 +44,7 @@ const PAYMENT_DETAILS: Record<string, { number?: string; bank_name?: string; acc
   },
   bank_transfer: {
     bank_name: "Your Bank Name",
-    account_name: "OptiMark",
+    account_name: "MCQ Scanner",
     account_number: "1234567890",
     routing: "BRAC-0001",
     instructions: "Send money to the above account. Include your transaction ID in the transfer note.",
@@ -68,7 +68,7 @@ export default function SubscriptionPage() {
   useEffect(() => {
     api.get("/subscription/my-payments").then((r) => {
       setMyPayments(r.data?.payments || []);
-    }).catch(() => {});
+    }).catch(() => { });
   }, []);
 
   const copyToClipboard = (text: string, label: string) => {
@@ -268,11 +268,10 @@ export default function SubscriptionPage() {
                       <td className="py-3 px-4 capitalize">{p.payment_method.replace("_", " ")}</td>
                       <td className="py-3 px-4">{CURRENCY}{p.amount}</td>
                       <td className="py-3 px-4">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${
-                          p.status === "approved" ? "bg-green-100 text-green-800" :
-                          p.status === "rejected" ? "bg-red-100 text-red-800" :
-                          "bg-amber-100 text-amber-800"
-                        }`}>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${p.status === "approved" ? "bg-green-100 text-green-800" :
+                            p.status === "rejected" ? "bg-red-100 text-red-800" :
+                              "bg-amber-100 text-amber-800"
+                          }`}>
                           {p.status === "pending" && <Clock className="h-3 w-3" />}
                           {p.status === "approved" && <CheckCircle2 className="h-3 w-3" />}
                           {p.status}

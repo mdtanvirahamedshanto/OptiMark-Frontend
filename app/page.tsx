@@ -7,7 +7,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-[#1e3a5f]">OptiMark</h1>
+          <h1 className="text-xl font-bold text-[#1e3a5f]">MCQ Scanner</h1>
           <nav className="flex items-center gap-4">
             <Link
               href="/auth/login"
@@ -33,7 +33,7 @@ export default function LandingPage() {
             <span className="text-[#1e3a5f]">Simplified</span>
           </h2>
           <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-            Save hours of manual grading. OptiMark scans OMR sheets, extracts
+            Save hours of manual grading. MCQ Scanner scans OMR sheets, extracts
             answers, and delivers results in seconds. Perfect for educators and
             institutions.
           </p>
@@ -117,7 +117,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} OptiMark. Automated OMR grading for educators.
+          © {new Date().getFullYear()} MCQ Scanner. Automated OMR grading for educators.
         </div>
       </footer>
     </div>

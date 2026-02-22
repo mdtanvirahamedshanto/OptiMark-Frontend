@@ -13,7 +13,7 @@ export const api = axios.create({
 // Request interceptor for auth token
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("optimark_token");
+    const token = localStorage.getItem("mcqscanner_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -32,7 +32,7 @@ api.interceptors.response.use(
     if (typeof window !== "undefined" && (error.response?.status === 401 || error.response?.status === 403)) {
       const isAuthEndpoint = error.config?.url?.includes("/auth/login") || error.config?.url?.includes("/auth/signup") || error.config?.url?.includes("/auth/register");
       if (!isAuthEndpoint) {
-        localStorage.removeItem("optimark_token");
+        localStorage.removeItem("mcqscanner_token");
         window.location.href = "/auth/login";
       }
     }

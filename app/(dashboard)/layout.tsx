@@ -84,11 +84,13 @@ export default function DashboardLayout({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userName, setUserName] = useState("U");
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const token =
       typeof window !== "undefined"
-        ? localStorage.getItem("optimark_token")
+        ? localStorage.getItem("mcqscanner_token")
         : null;
     const isAuthPage = pathname?.startsWith("/auth/");
     const isPublicPage = pathname === "/" || pathname === "";
@@ -98,7 +100,7 @@ export default function DashboardLayout({
       return;
     }
 
-    const stored = localStorage.getItem("optimark_user_name");
+    const stored = localStorage.getItem("mcqscanner_user_name");
     if (stored) {
       const initials = stored
         .split(" ")
@@ -116,10 +118,12 @@ export default function DashboardLayout({
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("optimark_token");
-    localStorage.removeItem("optimark_user_name");
+    localStorage.removeItem("mcqscanner_token");
+    localStorage.removeItem("mcqscanner_user_name");
     router.replace("/auth/login");
   };
+
+  if (!isMounted) return null;
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
@@ -143,7 +147,7 @@ export default function DashboardLayout({
               <span className="text-white font-bold text-sm">O</span>
             </div>
             <span className="text-xl font-bold text-[#1e3a5f] tracking-tight">
-              OptiMark
+              MCQ Scanner
             </span>
           </Link>
           <button
@@ -171,8 +175,8 @@ export default function DashboardLayout({
                         href={item.href}
                         onClick={() => setSidebarOpen(false)}
                         className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${active
-                            ? "bg-[#1e3a5f] text-white shadow-sm"
-                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ? "bg-[#1e3a5f] text-white shadow-sm"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                           }`}
                       >
                         <Icon

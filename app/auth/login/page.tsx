@@ -32,7 +32,7 @@ export default function LoginPage() {
       const token = response.data?.access_token ?? response.data?.token;
       const role = response.data?.role;
       if (token && typeof window !== "undefined") {
-        localStorage.setItem("optimark_token", token);
+        localStorage.setItem("mcqscanner_token", token);
       }
 
       addToast("Welcome back!", "success");
@@ -52,7 +52,7 @@ export default function LoginPage() {
             href="/"
             className="text-xl font-bold text-[#1e3a5f] hover:opacity-90"
           >
-            OptiMark
+            MCQ Scanner
           </Link>
         </div>
       </header>
