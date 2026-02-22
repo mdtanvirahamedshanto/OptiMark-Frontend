@@ -41,7 +41,26 @@ export default function NormalOMRSheet({
 
     return (
         <div className="print:p-0 print:m-0 print:w-[210mm] print:overflow-hidden flex justify-center" style={{ backgroundColor: '#ffffff', padding: '20px', userSelect: 'none', width: 'fit-content', margin: '0 auto', fontSize: '14px', color: '#000000', overflowX: 'auto', WebkitPrintColorAdjust: 'exact', colorAdjust: 'exact' }}>
-            <div id="omr-printable-area" className="print:w-full print:max-w-[210mm]" style={{ backgroundColor: '#ffffff', padding: '16px 8px', width: '100%', maxWidth: '210mm', margin: '0 auto' }}>
+            <div id="omr-printable-area" className="print:w-full print:max-w-[210mm]" style={{ backgroundColor: '#ffffff', padding: '16px 8px', width: '100%', maxWidth: '210mm', margin: '0 auto', position: 'relative' }}>
+                {/* Top Left Marker */}
+                <div style={{ position: 'absolute', top: '20px', left: '20px', width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                </div>
+                {/* Top Right Marker */}
+                <div style={{ position: 'absolute', top: '20px', right: '20px', width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                    <div style={{ position: 'absolute', bottom: '0', left: '0', width: '16px', height: '16px', backgroundColor: '#000000' }}></div>
+                </div>
+                {/* Bottom Left Marker */}
+                <div style={{ position: 'absolute', bottom: '20px', left: '20px', width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                </div>
+                {/* Bottom Right Marker */}
+                <div style={{ position: 'absolute', bottom: '20px', right: '20px', width: '40px', height: '40px', backgroundColor: '#000000' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '16px', height: '16px', backgroundColor: '#ffffff' }}></div>
+                    <div style={{ position: 'absolute', top: '0', right: '0', width: '16px', height: '16px', backgroundColor: '#000000' }}></div>
+                </div>
+
                 <div style={{ maxWidth: '493px', margin: '0 auto' }}>
                     <div style={{ paddingTop: '40px', textAlign: 'center', width: '100%' }}>
                         <h1 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: `${titleSize}px`, margin: 0, padding: 0 }}>
@@ -89,68 +108,101 @@ export default function NormalOMRSheet({
                     </div>
                 </div>
 
-                <div style={{ width: '100%', maxWidth: '190mm', minWidth: '483px', margin: '0 auto', border: '3px solid #1f2937', boxSizing: 'border-box' }}>
-                    {/* Top Timing Marks */}
-                    <div style={{ borderBottom: '1px dashed #9ca3af', padding: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
-                        </div>
-                        <div style={{ display: 'flex', flex: 1, justifyContent: 'center', opacity: 0.8 }}>
+                <div style={{ width: '100%', maxWidth: '190mm', minWidth: '483px', margin: '0 auto', border: '5px solid #000000', boxSizing: 'border-box', position: 'relative' }}>
+                    {/* Top Inside Bounding Box Timing Marks */}
+                    <div style={{ padding: '0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid #000000', height: '24px' }}>
+                        <div style={{ width: '24px', height: '20px', backgroundColor: '#000000', marginLeft: '2px' }}></div>
+                        <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
                             {Array.from({ length: columnsCount }).map((_, i) => (
-                                <div key={`tm-${i}`} style={{ display: 'flex', margin: '0 12px' }}>
-                                    <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '8px' }}></div>
-                                    <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
+                                <div key={`tm-${i}`} style={{ display: 'flex', margin: '0 16px' }}>
+                                    <div style={{ height: '20px', width: '24px', backgroundColor: '#000000', marginRight: '16px' }}></div>
+                                    <div style={{ height: '20px', width: '24px', backgroundColor: '#000000' }}></div>
                                 </div>
                             ))}
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '4px' }}></div>
-                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000', marginRight: '4px' }}></div>
-                            <div style={{ height: '16px', width: '12px', backgroundColor: '#000000' }}></div>
+                        <div style={{ display: 'flex', gap: '8px', marginRight: '2px' }}>
+                            <div style={{ height: '20px', width: '24px', backgroundColor: '#000000' }}></div>
+                            <div style={{ height: '20px', width: '24px', backgroundColor: '#000000' }}></div>
+                            <div style={{ height: '20px', width: '24px', backgroundColor: '#000000' }}></div>
                         </div>
                     </div>
 
+                    {/* Bottom Inside Bounding Box Timing Marks */}
+                    <div style={{ position: 'absolute', bottom: '0', left: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #000000', height: '24px' }}>
+                        <div style={{ width: '24px', height: '20px', backgroundColor: '#000000', marginLeft: '2px' }}></div>
+                        <div style={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+                            {Array.from({ length: columnsCount }).map((_, i) => (
+                                <div key={`btm-${i}`} style={{ display: 'flex', margin: '0 16px' }}>
+                                    <div style={{ height: '20px', width: '24px', backgroundColor: '#000000', marginRight: '16px' }}></div>
+                                    <div style={{ height: '20px', width: '24px', backgroundColor: '#000000' }}></div>
+                                </div>
+                            ))}
+                        </div>
+                        <div style={{ width: '24px', height: '20px', backgroundColor: '#000000', marginRight: '2px' }}></div>
+                    </div>
+
                     {/* OMR Grid Using Standard HTML Tables for Perfect PDF Alignment */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 2px' }}>
-                        {columns.map((columnQuestions, colIdx) => (
-                            <table key={`col-${colIdx}`} style={{ flex: 1, borderCollapse: 'collapse', margin: '0 4px', width: '100%' }}>
-                                <tbody>
-                                    {columnQuestions.map((qNum) => (
-                                        <tr key={`q-${qNum}`} style={{ height: '28px' }}>
-                                            <td style={{ width: '30px', textAlign: 'right', paddingRight: '8px', verticalAlign: 'middle' }}>
-                                                <span style={{ fontWeight: 'bold', fontSize: '15px' }}>{toBengaliNumber(qNum)}</span>
-                                            </td>
-                                            <td style={{ verticalAlign: 'middle' }}>
-                                                <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-                                                    <tbody>
-                                                        <tr>
-                                                            {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
-                                                                <td key={`opt-${qNum}-${optIdx}`} style={{ textAlign: 'center' }}>
-                                                                    <div style={{
-                                                                        height: '22px',
-                                                                        width: '22px',
-                                                                        borderRadius: '50%',
-                                                                        border: '1.5px solid #374151',
-                                                                        display: 'inline-flex',
-                                                                        alignItems: 'center',
-                                                                        justifyContent: 'center',
-                                                                        fontSize: '13px',
-                                                                        lineHeight: '1',
-                                                                        boxSizing: 'border-box'
-                                                                    }}>
-                                                                        {opt}
-                                                                    </div>
-                                                                </td>
-                                                            ))}
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ))}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 16px 40px 16px' }}>
+                        {/* Left Timing Track */}
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            {Array.from({ length: Math.ceil(questionCount / columnsCount) }).map((_, i) => (
+                                <div key={`ltm-${i}`} style={{ height: '28px', display: 'flex', alignItems: 'center' }}>
+                                    <div style={{ height: '10px', width: '16px', backgroundColor: '#000000' }}></div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Questions Columns */}
+                        <div style={{ display: 'flex', flex: 1, justifyContent: 'space-evenly', margin: '0 16px' }}>
+                            {columns.map((columnQuestions, colIdx) => (
+                                <table key={`col-${colIdx}`} style={{ borderCollapse: 'collapse', width: '140px' }}>
+                                    <tbody>
+                                        {columnQuestions.map((qNum) => (
+                                            <tr key={`q-${qNum}`} style={{ height: '28px' }}>
+                                                <td style={{ width: '30px', textAlign: 'right', paddingRight: '8px', verticalAlign: 'middle' }}>
+                                                    <span style={{ fontWeight: 'bold', fontSize: '15px' }}>{toBengaliNumber(qNum)}</span>
+                                                </td>
+                                                <td style={{ verticalAlign: 'middle' }}>
+                                                    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                                                        <tbody>
+                                                            <tr>
+                                                                {['ক', 'খ', 'গ', 'ঘ'].map((opt, optIdx) => (
+                                                                    <td key={`opt-${qNum}-${optIdx}`} style={{ textAlign: 'center' }}>
+                                                                        <div style={{
+                                                                            height: '22px',
+                                                                            width: '22px',
+                                                                            borderRadius: '50%',
+                                                                            border: '1.5px solid #374151',
+                                                                            display: 'inline-flex',
+                                                                            alignItems: 'center',
+                                                                            justifyContent: 'center',
+                                                                            fontSize: '13px',
+                                                                            lineHeight: '1',
+                                                                            boxSizing: 'border-box'
+                                                                        }}>
+                                                                            {opt}
+                                                                        </div>
+                                                                    </td>
+                                                                ))}
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ))}
+                        </div>
+
+                        {/* Right Timing Track */}
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            {Array.from({ length: Math.ceil(questionCount / columnsCount) }).map((_, i) => (
+                                <div key={`rtm-${i}`} style={{ height: '28px', display: 'flex', alignItems: 'center' }}>
+                                    <div style={{ height: '10px', width: '16px', backgroundColor: '#000000' }}></div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
