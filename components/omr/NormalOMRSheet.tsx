@@ -36,9 +36,9 @@ export default function NormalOMRSheet({
       className="print:p-0 print:m-0 print:w-[210mm] print:overflow-hidden flex justify-center"
       style={{
         backgroundColor: "#ffffff",
-        padding: layout === "single" ? "20px" : "8px",
+        padding: layout === "single" ? "20px" : "0px",
         userSelect: "none",
-        width: layout === "single" ? "fit-content" : "100%",
+        width: "fit-content",
         margin: "0 auto",
         fontSize: "14px",
         color: "#000000",
@@ -53,7 +53,7 @@ export default function NormalOMRSheet({
         style={{
           backgroundColor: "#ffffff",
           padding:
-            layout === "single" ? "16px 8px 80px 8px" : "14px 4px 70px 4px",
+            layout === "single" ? "16px 8px 80px 8px" : "8px 8px 48px 8px",
           width: "100%",
           maxWidth: "210mm",
           margin: "0 auto",
@@ -120,7 +120,7 @@ export default function NormalOMRSheet({
         <div
           style={{
             position: "absolute",
-            bottom: "20px",
+            bottom: layout === "single" ? "20px" : "4px",
             left: "20px",
             width: "40px",
             height: "40px",
@@ -143,7 +143,7 @@ export default function NormalOMRSheet({
         <div
           style={{
             position: "absolute",
-            bottom: "20px",
+            bottom: layout === "single" ? "20px" : "4px",
             right: "20px",
             width: "40px",
             height: "40px",
@@ -175,7 +175,11 @@ export default function NormalOMRSheet({
 
         <div style={{ maxWidth: "493px", margin: "0 auto" }}>
           <div
-            style={{ paddingTop: "40px", textAlign: "center", width: "100%" }}
+            style={{
+              paddingTop: layout === "single" ? "40px" : "16px",
+              textAlign: "center",
+              width: "100%",
+            }}
           >
             <h1
               style={{
@@ -221,8 +225,8 @@ export default function NormalOMRSheet({
 
           <div
             style={{
-              marginTop: "8px",
-              marginBottom: "16px",
+              marginTop: layout === "single" ? "8px" : "4px",
+              marginBottom: layout === "single" ? "16px" : "8px",
               padding: "8px 0",
               fontSize: "15px",
             }}
@@ -326,7 +330,7 @@ export default function NormalOMRSheet({
           style={{
             width: "100%",
             maxWidth: "190mm",
-            minWidth: layout === "single" ? "483px" : "330px",
+            minWidth: "483px",
             margin: "0 auto",
             border: "5px solid #000000",
             boxSizing: "border-box",
@@ -462,7 +466,10 @@ export default function NormalOMRSheet({
             style={{
               display: "flex",
               justifyContent: "space-between",
-              padding: "16px 16px 40px 16px",
+              padding:
+                layout === "single"
+                  ? "16px 16px 40px 16px"
+                  : "8px 16px 20px 16px",
             }}
           >
             {/* Left Timing Track */}
@@ -494,9 +501,8 @@ export default function NormalOMRSheet({
               style={{
                 display: "flex",
                 flex: 1,
-                justifyContent:
-                  layout === "single" ? "space-evenly" : "space-between",
-                padding: layout === "single" ? "0 16px" : "0 2px",
+                justifyContent: "space-evenly",
+                padding: layout === "single" ? "0 16px" : "0 8px",
               }}
             >
               {columns.map((columnQuestions, colIdx) => (
@@ -504,7 +510,7 @@ export default function NormalOMRSheet({
                   key={`col-${colIdx}`}
                   style={{
                     borderCollapse: "collapse",
-                    width: layout === "single" ? "140px" : "120px",
+                    width: "140px",
                   }}
                 >
                   <tbody>
@@ -512,16 +518,16 @@ export default function NormalOMRSheet({
                       <tr key={`q-${qNum}`} style={{ height: "28px" }}>
                         <td
                           style={{
-                            width: layout === "single" ? "30px" : "25px",
+                            width: "30px",
                             textAlign: "right",
-                            paddingRight: layout === "single" ? "8px" : "6px",
+                            paddingRight: "8px",
                             verticalAlign: "middle",
                           }}
                         >
                           <span
                             style={{
                               fontWeight: "bold",
-                              fontSize: layout === "single" ? "15px" : "14px",
+                              fontSize: "15px",
                             }}
                           >
                             {qNum}
@@ -543,17 +549,14 @@ export default function NormalOMRSheet({
                                   >
                                     <div
                                       style={{
-                                        height:
-                                          layout === "single" ? "22px" : "18px",
-                                        width:
-                                          layout === "single" ? "22px" : "18px",
+                                        height: "22px",
+                                        width: "22px",
                                         borderRadius: "50%",
                                         border: "1.5px solid #374151",
                                         display: "inline-flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        fontSize:
-                                          layout === "single" ? "13px" : "12px",
+                                        fontSize: "13px",
                                         lineHeight: "1",
                                         boxSizing: "border-box",
                                       }}
