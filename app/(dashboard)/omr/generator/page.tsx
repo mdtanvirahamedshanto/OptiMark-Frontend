@@ -243,11 +243,11 @@ export default function OMRGeneratorPage() {
                       <button
                         key={`col-${col}`}
                         onClick={() => setNormalColumns(col as 2 | 3 | 4)}
-                        disabled={normalPages === 2 && col !== 4}
+                        disabled={normalPages === 2 && col !== 3}
                         className={`flex items-center justify-center py-2 px-1 border rounded transition-all ${
                           normalColumns === col
                             ? "border-blue-500 bg-blue-50/50 shadow-sm"
-                            : normalPages === 2 && col !== 4
+                            : normalPages === 2 && col !== 3
                               ? "border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed"
                               : "border-gray-200 hover:bg-gray-50"
                         }`}
@@ -259,7 +259,7 @@ export default function OMRGeneratorPage() {
                               className={`w-3 h-[18px] ${
                                 normalColumns === col
                                   ? "bg-blue-400"
-                                  : normalPages === 2 && col !== 4
+                                  : normalPages === 2 && col !== 3
                                     ? "bg-gray-200"
                                     : "bg-gray-300"
                               } rounded-sm`}
@@ -271,7 +271,7 @@ export default function OMRGeneratorPage() {
                   </div>
                   {normalPages === 2 && (
                     <p className="text-[11px] text-red-500 mt-1.5">
-                      ২ টি শিটের জন্য শুধুমাত্র ৪ টি কলাম ব্যবহার করা যাবে।
+                      ২ টি শিটের জন্য শুধুমাত্র ৩ টি কলাম ব্যবহার করা যাবে।
                     </p>
                   )}
                 </div>
@@ -286,7 +286,7 @@ export default function OMRGeneratorPage() {
                         key={`pages-${pages}`}
                         onClick={() => {
                           setNormalPages(pages as 1 | 2);
-                          if (pages === 2) setNormalColumns(4);
+                          if (pages === 2) setNormalColumns(3);
                         }}
                         className={`flex-1 py-1.5 rounded font-medium text-[13px] transition ${
                           normalPages === pages
@@ -430,8 +430,11 @@ export default function OMRGeneratorPage() {
                     <NormalOMRSheet
                       institutionName={institutionName}
                       address={address}
-                      questionCount={Number(normalQuestionCount) || 30}
-                      columnsCount={4}
+                      questionCount={Math.min(
+                        Number(normalQuestionCount) || 30,
+                        30,
+                      )}
+                      columnsCount={3}
                       titleSize={titleSize}
                       addressSize={addressSize}
                       layout="double"
@@ -441,8 +444,11 @@ export default function OMRGeneratorPage() {
                     <NormalOMRSheet
                       institutionName={institutionName}
                       address={address}
-                      questionCount={Number(normalQuestionCount) || 30}
-                      columnsCount={normalColumns}
+                      questionCount={Math.min(
+                        Number(normalQuestionCount) || 30,
+                        30,
+                      )}
+                      columnsCount={3}
                       titleSize={titleSize}
                       addressSize={addressSize}
                       layout="double"

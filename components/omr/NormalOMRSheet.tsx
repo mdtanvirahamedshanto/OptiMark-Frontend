@@ -54,7 +54,7 @@ export default function NormalOMRSheet({
           backgroundColor: "#ffffff",
           padding:
             layout === "single" ? "16px 8px 80px 8px" : "8px 8px 48px 8px",
-          width: "100%",
+          width: "190mm",
           maxWidth: "210mm",
           margin: "0 auto",
           position: "relative",
@@ -173,10 +173,17 @@ export default function NormalOMRSheet({
           ></div>
         </div>
 
-        <div style={{ maxWidth: "493px", margin: "0 auto" }}>
+        <div
+          style={{
+            width: "100%",
+            padding: "0 40px",
+            boxSizing: "border-box",
+            margin: "0 auto",
+          }}
+        >
           <div
             style={{
-              paddingTop: layout === "single" ? "40px" : "16px",
+              paddingTop: layout === "single" ? "40px" : "6px",
               textAlign: "center",
               width: "100%",
             }}
@@ -208,12 +215,12 @@ export default function NormalOMRSheet({
           <div
             style={{
               borderBottom: "1px solid #9ca3af",
-              marginTop: "12px",
+              marginTop: "2px",
               marginLeft: "20px",
               marginRight: "20px",
             }}
           ></div>
-          <div
+          {/* <div
             style={{
               borderBottom: "1px solid #9ca3af",
               marginTop: "4px",
@@ -221,11 +228,11 @@ export default function NormalOMRSheet({
               marginLeft: "56px",
               marginRight: "56px",
             }}
-          ></div>
+          ></div> */}
 
           <div
             style={{
-              marginTop: layout === "single" ? "8px" : "4px",
+              marginTop: layout === "single" ? "8px" : "2px",
               marginBottom: layout === "single" ? "16px" : "8px",
               padding: "8px 0",
               fontSize: "15px",
@@ -234,15 +241,37 @@ export default function NormalOMRSheet({
             <div
               style={{ display: "flex", flexDirection: "column", gap: "12px" }}
             >
-              <div style={{ display: "flex", alignItems: "baseline" }}>
-                <span style={{ marginRight: "4px" }}>নাম:</span>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "16px",
+                }}
+              >
                 <div
-                  style={{
-                    flex: 1,
-                    borderBottom: "1px dashed #9ca3af",
-                    height: "20px",
-                  }}
-                ></div>
+                  style={{ flex: 2, display: "flex", alignItems: "baseline" }}
+                >
+                  <span style={{ marginRight: "4px" }}>নাম:</span>
+                  <div
+                    style={{
+                      flex: 1,
+                      borderBottom: "1px dashed #9ca3af",
+                      height: "20px",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  style={{ flex: 1, display: "flex", alignItems: "baseline" }}
+                >
+                  <span style={{ marginRight: "4px" }}>রোল:</span>
+                  <div
+                    style={{
+                      flex: 1,
+                      borderBottom: "1px dashed #9ca3af",
+                      height: "20px",
+                    }}
+                  ></div>
+                </div>
               </div>
               <div
                 style={{
@@ -266,26 +295,6 @@ export default function NormalOMRSheet({
                 <div
                   style={{ flex: 1, display: "flex", alignItems: "baseline" }}
                 >
-                  <span style={{ marginRight: "4px" }}>সেকশন:</span>
-                  <div
-                    style={{
-                      flex: 1,
-                      borderBottom: "1px dashed #9ca3af",
-                      height: "20px",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "16px",
-                }}
-              >
-                <div
-                  style={{ flex: 1, display: "flex", alignItems: "baseline" }}
-                >
                   <span style={{ marginRight: "4px" }}>বিষয়:</span>
                   <div
                     style={{
@@ -298,21 +307,7 @@ export default function NormalOMRSheet({
                 <div
                   style={{ flex: 1, display: "flex", alignItems: "baseline" }}
                 >
-                  <span style={{ marginRight: "4px" }}>পত্র:</span>
-                  <div
-                    style={{
-                      flex: 1,
-                      borderBottom: "1px dashed #9ca3af",
-                      height: "20px",
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div style={{ display: "flex" }}>
-                <div
-                  style={{ flex: 1, display: "flex", alignItems: "baseline" }}
-                >
-                  <span style={{ marginRight: "4px" }}>রোল:</span>
+                  <span style={{ marginRight: "4px" }}>সেট কোড:</span>
                   <div
                     style={{
                       flex: 1,
@@ -328,276 +323,311 @@ export default function NormalOMRSheet({
 
         <div
           style={{
+            position: "absolute",
+            top: layout === "single" ? "40px" : "15px",
+            right: "65px",
+            border: "1px solid #9ca3af",
+            padding: "8px 12px",
+            fontSize: "15px",
+            fontWeight: "bold",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "16px",
+          }}
+        >
+          <span>প্রাপ্ত নাম্বার</span>
+          <div
+            style={{ width: "60px", borderBottom: "1px dashed #9ca3af" }}
+          ></div>
+        </div>
+
+        <div
+          style={{
             width: "100%",
             maxWidth: "190mm",
-            minWidth: "483px",
+            minWidth: "100%",
+            padding: "0 20px",
             margin: "0 auto",
-            border: "5px solid #000000",
             boxSizing: "border-box",
             position: "relative",
           }}
         >
-          {/* Top Inside Bounding Box Timing Marks */}
           <div
             style={{
-              padding: "0",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              borderBottom: "1px solid #000000",
-              height: "24px",
-            }}
-          >
-            <div
-              style={{
-                width: "24px",
-                height: "20px",
-                backgroundColor: "#000000",
-                marginLeft: "2px",
-              }}
-            ></div>
-            <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
-              {Array.from({ length: columnsCount }).map((_, i) => (
-                <div
-                  key={`tm-${i}`}
-                  style={{ display: "flex", margin: "0 16px" }}
-                >
-                  <div
-                    style={{
-                      height: "20px",
-                      width: "24px",
-                      backgroundColor: "#000000",
-                      marginRight: "16px",
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      height: "20px",
-                      width: "24px",
-                      backgroundColor: "#000000",
-                    }}
-                  ></div>
-                </div>
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: "8px", marginRight: "2px" }}>
-              <div
-                style={{
-                  height: "20px",
-                  width: "24px",
-                  backgroundColor: "#000000",
-                }}
-              ></div>
-              <div
-                style={{
-                  height: "20px",
-                  width: "24px",
-                  backgroundColor: "#000000",
-                }}
-              ></div>
-              <div
-                style={{
-                  height: "20px",
-                  width: "24px",
-                  backgroundColor: "#000000",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Bottom Inside Bounding Box Timing Marks */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "0",
-              left: "0",
               width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              borderTop: "1px solid #000000",
-              height: "24px",
+              border: "5px solid #000000",
+              boxSizing: "border-box",
+              position: "relative",
             }}
           >
+            {/* Top Inside Bounding Box Timing Marks */}
             <div
               style={{
-                width: "24px",
-                height: "20px",
-                backgroundColor: "#000000",
-                marginLeft: "2px",
+                padding: "0",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                borderBottom: "1px solid #000000",
+                height: "24px",
               }}
-            ></div>
-            <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
-              {Array.from({ length: columnsCount }).map((_, i) => (
-                <div
-                  key={`btm-${i}`}
-                  style={{ display: "flex", margin: "0 16px" }}
-                >
+            >
+              <div
+                style={{
+                  width: "24px",
+                  height: "20px",
+                  backgroundColor: "#000000",
+                  marginLeft: "2px",
+                }}
+              ></div>
+              <div
+                style={{ display: "flex", flex: 1, justifyContent: "center" }}
+              >
+                {Array.from({ length: columnsCount }).map((_, i) => (
                   <div
-                    style={{
-                      height: "20px",
-                      width: "24px",
-                      backgroundColor: "#000000",
-                      marginRight: "16px",
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      height: "20px",
-                      width: "24px",
-                      backgroundColor: "#000000",
-                    }}
-                  ></div>
-                </div>
-              ))}
-            </div>
-            <div
-              style={{
-                width: "24px",
-                height: "20px",
-                backgroundColor: "#000000",
-                marginRight: "2px",
-              }}
-            ></div>
-          </div>
-
-          {/* OMR Grid Using Standard HTML Tables for Perfect PDF Alignment */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding:
-                layout === "single"
-                  ? "16px 16px 40px 16px"
-                  : "8px 16px 20px 16px",
-            }}
-          >
-            {/* Left Timing Track */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {Array.from({
-                length: Math.ceil(questionCount / columnsCount),
-              }).map((_, i) => (
+                    key={`tm-${i}`}
+                    style={{ display: "flex", margin: "0 16px" }}
+                  >
+                    <div
+                      style={{
+                        height: "20px",
+                        width: "24px",
+                        backgroundColor: "#000000",
+                        marginRight: "16px",
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        height: "20px",
+                        width: "24px",
+                        backgroundColor: "#000000",
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: "8px", marginRight: "2px" }}>
                 <div
-                  key={`ltm-${i}`}
                   style={{
-                    height: "28px",
-                    display: "flex",
-                    alignItems: "center",
+                    height: "20px",
+                    width: "24px",
+                    backgroundColor: "#000000",
                   }}
-                >
-                  <div
-                    style={{
-                      height: "10px",
-                      width: "16px",
-                      backgroundColor: "#000000",
-                    }}
-                  ></div>
-                </div>
-              ))}
+                ></div>
+                <div
+                  style={{
+                    height: "20px",
+                    width: "24px",
+                    backgroundColor: "#000000",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    height: "20px",
+                    width: "24px",
+                    backgroundColor: "#000000",
+                  }}
+                ></div>
+              </div>
             </div>
 
-            {/* Questions Columns */}
+            {/* Bottom Inside Bounding Box Timing Marks */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "0",
+                left: "0",
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                borderTop: "1px solid #000000",
+                height: "24px",
+              }}
+            >
+              <div
+                style={{
+                  width: "24px",
+                  height: "20px",
+                  backgroundColor: "#000000",
+                  marginLeft: "2px",
+                }}
+              ></div>
+              <div
+                style={{ display: "flex", flex: 1, justifyContent: "center" }}
+              >
+                {Array.from({ length: columnsCount }).map((_, i) => (
+                  <div
+                    key={`btm-${i}`}
+                    style={{ display: "flex", margin: "0 16px" }}
+                  >
+                    <div
+                      style={{
+                        height: "20px",
+                        width: "24px",
+                        backgroundColor: "#000000",
+                        marginRight: "16px",
+                      }}
+                    ></div>
+                    <div
+                      style={{
+                        height: "20px",
+                        width: "24px",
+                        backgroundColor: "#000000",
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+              <div
+                style={{
+                  width: "24px",
+                  height: "20px",
+                  backgroundColor: "#000000",
+                  marginRight: "2px",
+                }}
+              ></div>
+            </div>
+
+            {/* OMR Grid Using Standard HTML Tables for Perfect PDF Alignment */}
             <div
               style={{
                 display: "flex",
-                flex: 1,
-                justifyContent: "space-evenly",
-                padding: layout === "single" ? "0 16px" : "0 8px",
+                justifyContent: "space-between",
+                padding:
+                  layout === "single"
+                    ? "16px 16px 40px 16px"
+                    : "8px 16px 20px 16px",
               }}
             >
-              {columns.map((columnQuestions, colIdx) => (
-                <table
-                  key={`col-${colIdx}`}
-                  style={{
-                    borderCollapse: "collapse",
-                    width: "140px",
-                  }}
-                >
-                  <tbody>
-                    {columnQuestions.map((qNum) => (
-                      <tr key={`q-${qNum}`} style={{ height: "28px" }}>
-                        <td
-                          style={{
-                            width: "30px",
-                            textAlign: "right",
-                            paddingRight: "8px",
-                            verticalAlign: "middle",
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: "15px",
-                            }}
-                          >
-                            {qNum}
-                          </span>
-                        </td>
-                        <td style={{ verticalAlign: "middle" }}>
-                          <table
-                            style={{
-                              borderCollapse: "collapse",
-                              width: "100%",
-                            }}
-                          >
-                            <tbody>
-                              <tr>
-                                {["ক", "খ", "গ", "ঘ"].map((opt, optIdx) => (
-                                  <td
-                                    key={`opt-${qNum}-${optIdx}`}
-                                    style={{ textAlign: "center" }}
-                                  >
-                                    <div
-                                      style={{
-                                        height: "22px",
-                                        width: "22px",
-                                        borderRadius: "50%",
-                                        border: "1.5px solid #374151",
-                                        display: "inline-flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        fontSize: "13px",
-                                        lineHeight: "1",
-                                        boxSizing: "border-box",
-                                      }}
-                                    >
-                                      {opt}
-                                    </div>
-                                  </td>
-                                ))}
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ))}
-            </div>
-
-            {/* Right Timing Track */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {Array.from({
-                length: Math.ceil(questionCount / columnsCount),
-              }).map((_, i) => (
-                <div
-                  key={`rtm-${i}`}
-                  style={{
-                    height: "28px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
+              {/* Left Timing Track */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {Array.from({
+                  length: Math.ceil(questionCount / columnsCount),
+                }).map((_, i) => (
                   <div
+                    key={`ltm-${i}`}
                     style={{
-                      height: "10px",
-                      width: "16px",
-                      backgroundColor: "#000000",
+                      height: "28px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
-                  ></div>
-                </div>
-              ))}
+                  >
+                    <div
+                      style={{
+                        height: "10px",
+                        width: "16px",
+                        backgroundColor: "#000000",
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Questions Columns */}
+              <div
+                style={{
+                  display: "flex",
+                  flex: 1,
+                  justifyContent: "space-between",
+                  gap: "16px",
+                  padding: layout === "single" ? "0 16px" : "0 8px",
+                }}
+              >
+                {columns.map((columnQuestions, colIdx) => (
+                  <table
+                    key={`col-${colIdx}`}
+                    style={{
+                      borderCollapse: "collapse",
+                      width: "100%",
+                    }}
+                  >
+                    <tbody>
+                      {columnQuestions.map((qNum) => (
+                        <tr key={`q-${qNum}`} style={{ height: "28px" }}>
+                          <td
+                            style={{
+                              width: "30px",
+                              textAlign: "right",
+                              paddingRight: "8px",
+                              verticalAlign: "middle",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                                fontSize: "15px",
+                              }}
+                            >
+                              {qNum}
+                            </span>
+                          </td>
+                          <td style={{ verticalAlign: "middle" }}>
+                            <table
+                              style={{
+                                borderCollapse: "collapse",
+                                width: "100%",
+                              }}
+                            >
+                              <tbody>
+                                <tr>
+                                  {["ক", "খ", "গ", "ঘ"].map((opt, optIdx) => (
+                                    <td
+                                      key={`opt-${qNum}-${optIdx}`}
+                                      style={{ textAlign: "center" }}
+                                    >
+                                      <div
+                                        style={{
+                                          height: "22px",
+                                          width: "22px",
+                                          borderRadius: "50%",
+                                          border: "1.5px solid #374151",
+                                          display: "inline-flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          fontSize: "13px",
+                                          lineHeight: "1",
+                                          boxSizing: "border-box",
+                                        }}
+                                      >
+                                        {opt}
+                                      </div>
+                                    </td>
+                                  ))}
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ))}
+              </div>
+
+              {/* Right Timing Track */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {Array.from({
+                  length: Math.ceil(questionCount / columnsCount),
+                }).map((_, i) => (
+                  <div
+                    key={`rtm-${i}`}
+                    style={{
+                      height: "28px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: "10px",
+                        width: "16px",
+                        backgroundColor: "#000000",
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
