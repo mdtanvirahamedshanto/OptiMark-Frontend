@@ -60,7 +60,7 @@ export default function NormalOMRSheet({
         className="print:w-full print:max-w-[210mm]"
         style={{
           backgroundColor: "#ffffff",
-          padding: "16px 8px",
+          padding: "16px 8px 80px 8px",
           width: "100%",
           maxWidth: "210mm",
           margin: "0 auto",
