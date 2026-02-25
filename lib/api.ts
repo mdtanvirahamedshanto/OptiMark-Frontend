@@ -29,8 +29,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (typeof window !== "undefined" && (error.response?.status === 401 || error.response?.status === 403)) {
-      const isAuthEndpoint = error.config?.url?.includes("/auth/login") || error.config?.url?.includes("/auth/signup") || error.config?.url?.includes("/auth/register");
+    if (typeof window !== "undefined" && error.response?.status === 401) {
+      const isAuthEndpoint =
+        error.config?.url?.includes("/auth/login") ||
+        error.config?.url?.includes("/auth/signup") ||
+        error.config?.url?.includes("/auth/register");
       if (!isAuthEndpoint) {
         localStorage.removeItem("mcqscanner_token");
         window.location.href = "/auth/login";

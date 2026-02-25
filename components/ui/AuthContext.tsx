@@ -13,6 +13,7 @@ import {
   removeToken as removeStorageToken,
   decodeTokenPayload,
 } from "@/lib/auth";
+import { api } from "@/lib/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -57,9 +58,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const payload = decodeTokenPayload(token);
           // Verify expiration
           if (payload && payload.exp * 1000 > Date.now()) {
+            setIsLoading(true);
             setIsAuthenticated(true);
             // We will fetch full profile info asynchronously
             fetchUserProfile(token);
+            return;
           } else {
             removeStorageToken();
           }
@@ -75,23 +78,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUserProfile = async (token: string) => {
     try {
-      const res = await fetch("http://localhost:8000/api/v1/auth/me", {
+      const res = await api.get("/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (res.ok) {
-        const user = await res.json();
-        setUserId(String(user.id));
-        setRole(user.role || "teacher");
-        setInstitutionName(user.institution_name);
-        setAddress(user.address);
-        setTokens(user.tokens || 0);
-      } else {
-        removeStorageToken();
-      }
+      const user = res.data;
+      setUserId(String(user.id));
+      setRole(user.role || "teacher");
+      setInstitutionName(user.institution_name);
+      setAddress(user.address);
+      setTokens(user.tokens || 0);
     } catch {
-      // Ignore
+      removeStorageToken();
+      setIsAuthenticated(false);
+      setRole(null);
+      setUserId(null);
+      setInstitutionName(null);
+      setAddress(null);
+      setTokens(0);
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +104,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (token: string, newRole?: string) => {
     setStorageToken(token);
+    setIsLoading(true);
     setIsAuthenticated(true);
+    if (newRole) {
+      setRole(newRole);
+    }
     fetchUserProfile(token);
   };
 

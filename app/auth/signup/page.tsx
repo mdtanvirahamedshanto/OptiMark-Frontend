@@ -45,23 +45,24 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      const response = await api.post("/auth/signup", {
+      await api.post("/auth/signup", {
         institution_name: formData.institutionName,
         address: formData.address,
         email: formData.email,
         password: formData.password,
       });
 
-      const token =
-        response.data?.access_token ??
-        response.data?.token ??
-        response.data?.data?.access_token;
+      const loginResponse = await api.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+      const token = loginResponse.data?.access_token ?? loginResponse.data?.token;
+      const role = loginResponse.data?.role;
 
-      const role = response.data?.role || response.data?.data?.role;
-
-      if (token) {
-        login(token, role);
+      if (!token) {
+        throw new Error("Login token not received after signup");
       }
+      login(token, role);
 
       addToast("Account created successfully!", "success");
       setTimeout(() => {
