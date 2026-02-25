@@ -76,7 +76,7 @@ export function AnswerKeyEditor({
                     }
                     className={`h-9 px-2 rounded-full text-xs border ${selected ? "bg-slate-900 text-white border-slate-900" : "bg-white"}`}
                   >
-                    {`${opt}/${BENGALI_LABELS[opt]}`}
+                    {BENGALI_LABELS[opt]}
                   </button>
                 );
               })}

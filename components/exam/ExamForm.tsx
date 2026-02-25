@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
+const DEFAULT_BENGALI_SET_LABELS = ["ক", "খ", "গ", "ঘ"];
+
 export interface ExamFormValues {
   exam_name: string;
   subject_name: string;
@@ -33,7 +35,7 @@ export function ExamForm({
     subject_code: initial?.subject_code || "",
     has_set: initial?.has_set ?? true,
     set_count: initial?.set_count || 2,
-    set_labels: initial?.set_labels || ["A", "B"],
+    set_labels: initial?.set_labels || DEFAULT_BENGALI_SET_LABELS.slice(0, 2),
     total_questions: initial?.total_questions || 60,
     negative_marking: initial?.negative_marking ?? false,
     negative_value: initial?.negative_value ?? 0.25,
@@ -44,7 +46,9 @@ export function ExamForm({
     e.preventDefault();
     await onSubmit({
       ...form,
-      set_labels: form.has_set ? form.set_labels.slice(0, form.set_count) : [form.set_labels[0] || "A"],
+      set_labels: form.has_set
+        ? form.set_labels.slice(0, form.set_count)
+        : [form.set_labels[0] || "ক"],
       set_count: form.has_set ? form.set_count : 1,
     });
   };
@@ -91,7 +95,10 @@ export function ExamForm({
               setForm((p) => ({
                 ...p,
                 set_count: count,
-                set_labels: Array.from({ length: count }, (_, i) => p.set_labels[i] || String.fromCharCode(65 + i)),
+                set_labels: Array.from(
+                  { length: count },
+                  (_, i) => p.set_labels[i] || DEFAULT_BENGALI_SET_LABELS[i] || `সেট-${i + 1}`,
+                ),
               }));
             }}
           />

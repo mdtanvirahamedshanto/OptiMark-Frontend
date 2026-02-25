@@ -99,7 +99,7 @@ export default function AnswerKeyPageV1() {
 
   const setLabels = Array.isArray(exam?.set_labels)
     ? exam.set_labels.map((s: ExamSetItem) => s.set_label)
-    : ["A"];
+    : ["ক"];
   const editorKey = `${examId}-${setLabels.join(",")}-${Object.keys(keysBySet).length}`;
 
   return (
