@@ -33,11 +33,9 @@ export default function OMRGeneratorPage() {
   const [addressSize, setAddressSize] = useState(14);
 
   // Template selection
-  const [templateType, setTemplateType] = useState<"signature" | "normal">(
-    "signature",
-  );
+  const [templateType, setTemplateType] = useState<"board" | "normal">("board");
 
-  // Advanced (Signature) state
+  // Advanced (board) state
   const [questionCount, setQuestionCount] = useState<40 | 60 | 80 | 100>(100);
   const [color, setColor] = useState<OMRColor>("red");
   const [headerSize, setHeaderSize] = useState<HeaderSize>("Small");
@@ -150,8 +148,8 @@ export default function OMRGeneratorPage() {
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <button
-                  onClick={() => setTemplateType("signature")}
-                  className={`flex flex-col items-center border rounded-md transition-all overflow-hidden ${templateType === "signature" ? "ring-2 ring-gray-400 border-transparent shadow" : "border-gray-200 hover:border-gray-300"}`}
+                  onClick={() => setTemplateType("board")}
+                  className={`flex flex-col items-center border rounded-md transition-all overflow-hidden ${templateType === "board" ? "ring-2 ring-gray-400 border-transparent shadow" : "border-gray-200 hover:border-gray-300"}`}
                 >
                   <div className="h-[120px] w-full bg-gray-50 flex flex-col pt-1 items-center justify-start border-b px-2 gap-1 text-[8px] text-gray-300 pointer-events-none">
                     <div className="w-full flex justify-between px-1">
@@ -172,7 +170,7 @@ export default function OMRGeneratorPage() {
                     </div>
                   </div>
                   <span className="text-[13px] font-medium text-gray-700 w-full py-2 bg-white text-center">
-                    ইপ্রুশ্নব্যাংক সিগনেচার
+                    বোর্ড
                   </span>
                 </button>
                 <button
@@ -302,10 +300,10 @@ export default function OMRGeneratorPage() {
               </section>
             )}
 
-            {templateType === "signature" && (
+            {templateType === "board" && (
               <section className="space-y-5 pt-1">
                 <h3 className="text-[16px] font-bold text-gray-800">
-                  সিগনেচার কাস্টমাইজ অপশনস
+                  বোর্ড কাস্টমাইজ অপশনস
                 </h3>
 
                 <div>
@@ -399,7 +397,7 @@ export default function OMRGeneratorPage() {
                 height: "100%",
               }}
             >
-              {templateType === "signature" ? (
+              {templateType === "board" ? (
                 <OMRSheet
                   institutionName={institutionName}
                   address={address}

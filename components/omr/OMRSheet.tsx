@@ -1540,7 +1540,7 @@ export default function OMRSheet({
                   </div>
                 </div>
 
-                {/* Right Flow: Rules, QR, Signature */}
+                {/* Right Flow: Rules, QR, Board */}
                 <div
                   style={{
                     width: "200px",
