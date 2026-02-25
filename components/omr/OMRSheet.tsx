@@ -179,19 +179,9 @@ export default function OMRSheet({
           backgroundColor: "#ffffff",
           color: "#000000",
           fontFamily: "sans-serif",
-          transform:
-            infoType === "Digital"
-              ? questionCount === 100
-                ? "scale(0.88)"
-                : "scale(0.94)"
-              : "scale(1)",
+          transform: questionCount === 100 ? "scale(0.88)" : "scale(0.94)",
           transformOrigin: "top center",
-          marginBottom:
-            infoType === "Digital"
-              ? questionCount === 100
-                ? "-130px"
-                : "-60px"
-              : "0",
+          marginBottom: questionCount === 100 ? "-130px" : "-60px",
         }}
       >
         {/* Markers */}
