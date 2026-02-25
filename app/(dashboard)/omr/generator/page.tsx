@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Download } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import OMRSheet, {
   OMRColor,
   HeaderSize,
   InfoType,
 } from "@/components/omr/OMRSheet";
 import NormalOMRSheet from "@/components/omr/NormalOMRSheet";
+import { useAuth } from "@/components/ui/AuthContext";
 
 const questionCountOptions = [40, 60, 80, 100] as const;
 const colorOptions: { label: string; value: OMRColor; hex: string }[] = [
@@ -24,12 +26,14 @@ const colorOptions: { label: string; value: OMRColor; hex: string }[] = [
 ];
 
 export default function OMRGeneratorPage() {
-  // Branding
-  const [institutionName, setInstitutionName] = useState(
-    "Md Tanvir Ahamed Shanto",
-  );
+  const { institutionName: authInstitution, address: authAddress } = useAuth();
+  const searchParams = useSearchParams();
+
+  // Branding (read from context, fallback if missing)
+  const institutionName = authInstitution || "Md Tanvir Ahamed Shanto";
+  const address = authAddress || "কলাপাড়া, পটুয়াখালী";
+
   const [titleSize, setTitleSize] = useState(24);
-  const [address, setAddress] = useState("কলাপাড়া, পটুয়াখালী");
   const [addressSize, setAddressSize] = useState(14);
 
   // Template selection
@@ -45,6 +49,20 @@ export default function OMRGeneratorPage() {
   const [normalQuestionCount, setNormalQuestionCount] = useState<string>("30");
   const [normalColumns, setNormalColumns] = useState<2 | 3 | 4>(2);
   const [normalPages, setNormalPages] = useState<1 | 2>(2);
+
+  // Read query params on mount
+  useEffect(() => {
+    const qCount = searchParams.get("qCount");
+    if (qCount) {
+      const parsed = parseInt(qCount, 10);
+      if (!isNaN(parsed) && parsed > 0 && parsed <= 100) {
+        setQuestionCount(
+          (parsed > 80 ? 100 : parsed > 60 ? 80 : parsed > 40 ? 60 : 40) as any,
+        );
+        setNormalQuestionCount(String(parsed));
+      }
+    }
+  }, [searchParams]);
 
   const handleDownloadPdf = useCallback(() => {
     try {
@@ -98,8 +116,9 @@ export default function OMRGeneratorPage() {
                 <input
                   type="text"
                   value={institutionName}
-                  onChange={(e) => setInstitutionName(e.target.value)}
-                  className="w-full px-3 py-2 border rounded text-[15px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  readOnly
+                  className="w-full px-3 py-2 border rounded text-[15px] bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
+                  title="Institution name is locked to your profile. You can only adjust the size."
                 />
                 <div className="flex justify-between items-center gap-3 mt-2 text-sm text-gray-700">
                   <span>Size</span>
@@ -121,8 +140,9 @@ export default function OMRGeneratorPage() {
                 <input
                   type="text"
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  className="w-full px-3 py-2 border rounded text-[15px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  readOnly
+                  className="w-full px-3 py-2 border rounded text-[15px] bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
+                  title="Address is locked to your profile. You can only adjust the size."
                 />
                 <div className="flex justify-between items-center gap-3 mt-2 text-sm text-gray-700">
                   <span>Size</span>

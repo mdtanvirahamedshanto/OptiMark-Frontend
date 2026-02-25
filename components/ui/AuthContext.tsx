@@ -19,6 +19,9 @@ interface AuthContextType {
   isLoading: boolean;
   role: string | null;
   userId: string | null;
+  institutionName: string | null;
+  address: string | null;
+  tokens: number;
   login: (token: string, role?: string) => void;
   logout: () => void;
 }
@@ -28,6 +31,9 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: true,
   role: null,
   userId: null,
+  institutionName: null,
+  address: null,
+  tokens: 0,
   login: () => {},
   logout: () => {},
 });
@@ -39,6 +45,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [role, setRole] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [institutionName, setInstitutionName] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
+  const [tokens, setTokens] = useState<number>(0);
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -49,10 +58,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // Verify expiration
           if (payload && payload.exp * 1000 > Date.now()) {
             setIsAuthenticated(true);
-            setUserId(payload.sub || null);
-            // Payload might not contain role directly if relying on backend return
-            // Usually backend provides it on login, but if reloading we might default to teacher or decode if present in JWT
-            setRole(payload.role || "teacher");
+            // We will fetch full profile info asynchronously
+            fetchUserProfile(token);
           } else {
             removeStorageToken();
           }
@@ -66,15 +73,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     initializeAuth();
   }, []);
 
+  const fetchUserProfile = async (token: string) => {
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const user = await res.json();
+        setUserId(String(user.id));
+        setRole(user.role || "teacher");
+        setInstitutionName(user.institution_name);
+        setAddress(user.address);
+        setTokens(user.tokens || 0);
+      } else {
+        removeStorageToken();
+      }
+    } catch {
+      // Ignore
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const login = (token: string, newRole?: string) => {
     setStorageToken(token);
     setIsAuthenticated(true);
-
-    const payload = decodeTokenPayload(token);
-    if (payload) {
-      setUserId(payload.sub || null);
-    }
-    setRole(newRole || payload?.role || "teacher");
+    fetchUserProfile(token);
   };
 
   const logout = () => {
@@ -82,11 +108,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
     setRole(null);
     setUserId(null);
+    setInstitutionName(null);
+    setAddress(null);
+    setTokens(0);
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isLoading, role, userId, login, logout }}
+      value={{
+        isAuthenticated,
+        isLoading,
+        role,
+        userId,
+        institutionName,
+        address,
+        tokens,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -22,6 +22,8 @@ export default function SignupPage() {
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    institutionName: "",
+    address: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -44,6 +46,8 @@ export default function SignupPage() {
 
     try {
       const response = await api.post("/auth/signup", {
+        institution_name: formData.institutionName,
+        address: formData.address,
         email: formData.email,
         password: formData.password,
       });
@@ -92,6 +96,29 @@ export default function SignupPage() {
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Institution / School Name"
+              type="text"
+              placeholder="e.g., Dhaka Residential Model College"
+              value={formData.institutionName}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  institutionName: e.target.value,
+                }))
+              }
+              required
+            />
+            <Input
+              label="Address / District"
+              type="text"
+              placeholder="e.g., Mohammadpur, Dhaka"
+              value={formData.address}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, address: e.target.value }))
+              }
+              required
+            />
             <Input
               label="Email"
               type="email"

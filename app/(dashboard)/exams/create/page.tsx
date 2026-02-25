@@ -6,7 +6,12 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, FileQuestion, Upload } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/Card";
 import { AnswerKeyGrid } from "@/components/exam/AnswerKeyGrid";
 import { useToast } from "@/components/ui/Toast";
 import { api, getApiErrorMessage } from "@/lib/api";
@@ -40,17 +45,22 @@ export default function CreateExamPage() {
   >({});
 
   const totalQuestions = Math.min(100, Math.max(1, formData.totalQuestions));
-  const setCodes = formData.setCodeType === "bangla" ? BANGLA_SETS : ENGLISH_SETS;
-  const activeSetCodes = setCodes.slice(0, Math.min(4, Math.max(1, formData.numberOfSets)));
+  const setCodes =
+    formData.setCodeType === "bangla" ? BANGLA_SETS : ENGLISH_SETS;
+  const activeSetCodes = setCodes.slice(
+    0,
+    Math.min(4, Math.max(1, formData.numberOfSets)),
+  );
   const currentSetCode = activeSetCodes[selectedSetTab] ?? activeSetCodes[0];
   const currentAnswerKey = answerKeyBySet[currentSetCode] ?? {};
 
-  const handleAnswerChange = (setCode: string) => (questionNumber: number, option: AnswerOption) => {
-    setAnswerKeyBySet((prev) => ({
-      ...prev,
-      [setCode]: { ...(prev[setCode] ?? {}), [questionNumber]: option },
-    }));
-  };
+  const handleAnswerChange =
+    (setCode: string) => (questionNumber: number, option: AnswerOption) => {
+      setAnswerKeyBySet((prev) => ({
+        ...prev,
+        [setCode]: { ...(prev[setCode] ?? {}), [questionNumber]: option },
+      }));
+    };
 
   const canProceedStep1 =
     formData.title.trim().length > 0 &&
@@ -81,7 +91,9 @@ export default function CreateExamPage() {
     if (step === 2) setStep(1);
   };
 
-  const handleUploadAnswerKey = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadAnswerKey = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
     e.target.value = "";
@@ -94,7 +106,11 @@ export default function CreateExamPage() {
       const mapped: Record<number, AnswerOption> = {};
       for (const [k, v] of Object.entries(answers)) {
         const q = parseInt(k, 10);
-        if (q >= 1 && q <= totalQuestions && ["A", "B", "C", "D"].includes(String(v))) {
+        if (
+          q >= 1 &&
+          q <= totalQuestions &&
+          ["A", "B", "C", "D"].includes(String(v))
+        ) {
           mapped[q] = v as AnswerOption;
         }
       }
@@ -104,7 +120,7 @@ export default function CreateExamPage() {
       }));
       addToast(
         `Set ${currentSetCode}: ${Object.keys(mapped).length} উত্তর লোড হয়েছে। চেক করে এডিট করুন।`,
-        "success"
+        "success",
       );
     } catch (err) {
       addToast(getApiErrorMessage(err, "Answer key parse failed"), "error");
@@ -123,12 +139,11 @@ export default function CreateExamPage() {
         const ak = answerKeyBySet[setCode] ?? {};
         const filtered = Object.fromEntries(
           Object.entries(ak).filter(
-            ([k]) =>
-              parseInt(k, 10) >= 1 && parseInt(k, 10) <= totalQuestions
-          )
+            ([k]) => parseInt(k, 10) >= 1 && parseInt(k, 10) <= totalQuestions,
+          ),
         );
         const answersNumeric = Object.fromEntries(
-          Object.entries(filtered).map(([k, v]) => [k, optMap[v] ?? 0])
+          Object.entries(filtered).map(([k, v]) => [k, optMap[v] ?? 0]),
         );
         return { set_code: setCode, answers: answersNumeric };
       });
@@ -139,8 +154,14 @@ export default function CreateExamPage() {
         answer_keys,
       });
       const examId = response.data?.id ?? response.data?.exam_id;
-      addToast("Exam created! Download OMR template, then upload scanned sheets.", "success");
-      router.push(examId ? `/exams/${String(examId)}` : "/dashboard");
+      addToast(
+        "Exam created! Redirecting to generate OMR template...",
+        "success",
+      );
+      // Add a slight delay before routing to allow the toast to be seen
+      setTimeout(() => {
+        router.push(`/omr/generator?qCount=${totalQuestions}`);
+      }, 1500);
     } catch (error) {
       addToast(getApiErrorMessage(error, "Failed to create exam"), "error");
     } finally {
@@ -174,8 +195,9 @@ export default function CreateExamPage() {
           {STEPS.map((s) => (
             <div
               key={s.id}
-              className={`flex-1 flex items-center gap-2 ${step >= s.id ? "opacity-100" : "opacity-50"
-                }`}
+              className={`flex-1 flex items-center gap-2 ${
+                step >= s.id ? "opacity-100" : "opacity-50"
+              }`}
             >
               <div
                 className={`
@@ -258,7 +280,10 @@ export default function CreateExamPage() {
                       name="setCodeType"
                       checked={formData.setCodeType === "bangla"}
                       onChange={() =>
-                        setFormData((prev) => ({ ...prev, setCodeType: "bangla" }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          setCodeType: "bangla",
+                        }))
                       }
                       className="text-[#1e3a5f]"
                     />
@@ -270,7 +295,10 @@ export default function CreateExamPage() {
                       name="setCodeType"
                       checked={formData.setCodeType === "english"}
                       onChange={() =>
-                        setFormData((prev) => ({ ...prev, setCodeType: "english" }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          setCodeType: "english",
+                        }))
                       }
                       className="text-[#1e3a5f]"
                     />
@@ -278,7 +306,8 @@ export default function CreateExamPage() {
                   </label>
                 </div>
                 <p className="mt-1.5 text-sm text-slate-500">
-                  OMR sheet এ কোন সেট কোড ব্যবহার হবে (বাংলাদেশে বাংলা বেশি ব্যবহৃত)
+                  OMR sheet এ কোন সেট কোড ব্যবহার হবে (বাংলাদেশে বাংলা বেশি
+                  ব্যবহৃত)
                 </p>
               </div>
               <div>
@@ -296,16 +325,24 @@ export default function CreateExamPage() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-[#1e3a5f]"
                 >
                   <option value={1}>
-                    {formData.setCodeType === "bangla" ? "১ সেট (কোন সেট নেই)" : "1 Set (No Set)"}
+                    {formData.setCodeType === "bangla"
+                      ? "১ সেট (কোন সেট নেই)"
+                      : "1 Set (No Set)"}
                   </option>
                   <option value={2}>
-                    {formData.setCodeType === "bangla" ? "২ সেট (ক, খ)" : "2 Sets (A, B)"}
+                    {formData.setCodeType === "bangla"
+                      ? "২ সেট (ক, খ)"
+                      : "2 Sets (A, B)"}
                   </option>
                   <option value={3}>
-                    {formData.setCodeType === "bangla" ? "৩ সেট (ক, খ, গ)" : "3 Sets (A, B, C)"}
+                    {formData.setCodeType === "bangla"
+                      ? "৩ সেট (ক, খ, গ)"
+                      : "3 Sets (A, B, C)"}
                   </option>
                   <option value={4}>
-                    {formData.setCodeType === "bangla" ? "৪ সেট (ক, খ, গ, ঘ)" : "4 Sets (A, B, C, D)"}
+                    {formData.setCodeType === "bangla"
+                      ? "৪ সেট (ক, খ, গ, ঘ)"
+                      : "4 Sets (A, B, C, D)"}
                   </option>
                 </select>
                 <p className="mt-1.5 text-sm text-slate-500">
@@ -321,12 +358,18 @@ export default function CreateExamPage() {
           <Card>
             <CardHeader>
               <div>
-                <CardTitle>Answer Key {activeSetCodes.length > 1 ? "(প্রতিটি সেটের জন্য আলাদা)" : ""}</CardTitle>
+                <CardTitle>
+                  Answer Key{" "}
+                  {activeSetCodes.length > 1
+                    ? "(প্রতিটি সেটের জন্য আলাদা)"
+                    : ""}
+                </CardTitle>
                 <CardDescription>
                   {activeSetCodes.length > 1
                     ? "প্রতিটি সেটের প্রশ্ন সিরিয়াল আলাদা হয় - তাই প্রতিটি সেটের জন্য আলাদা answer key দিন। "
                     : ""}
-                  হাতে লেখা বা প্রিন্ট করা answer key (যেমন: ১. ক, 2. A) এর ছবি আপলোড করুন, অথবা ম্যানুয়ালি সিলেক্ট করুন।
+                  হাতে লেখা বা প্রিন্ট করা answer key (যেমন: ১. ক, 2. A) এর ছবি
+                  আপলোড করুন, অথবা ম্যানুয়ালি সিলেক্ট করুন।
                 </CardDescription>
               </div>
               <input
@@ -345,19 +388,22 @@ export default function CreateExamPage() {
                   isLoading={isUploadingKey}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  {activeSetCodes.length > 1 ? `Set ${currentSetCode} - ` : ""}Upload Answer Key
+                  {activeSetCodes.length > 1 ? `Set ${currentSetCode} - ` : ""}
+                  Upload Answer Key
                 </Button>
                 {activeSetCodes.map((sc, idx) => (
                   <button
                     key={sc}
                     type="button"
                     onClick={() => setSelectedSetTab(idx)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedSetTab === idx
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedSetTab === idx
                         ? "bg-[#1e3a5f] text-white"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                      }`}
+                    }`}
                   >
-                    {activeSetCodes.length > 1 ? `Set ${sc}` : "Answer Key"} ({answeredCountBySet[idx] ?? 0}/{totalQuestions})
+                    {activeSetCodes.length > 1 ? `Set ${sc}` : "Answer Key"} (
+                    {answeredCountBySet[idx] ?? 0}/{totalQuestions})
                   </button>
                 ))}
                 {activeSetCodes.length > 1 && (

@@ -13,9 +13,16 @@ import {
   CheckCircle2,
   KeyRound,
   ArrowRight,
+  Coins,
 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/Card";
 import { api } from "@/lib/api";
+import { useAuth } from "@/components/ui/AuthContext";
 
 interface Exam {
   id: number;
@@ -29,9 +36,13 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [totalStudents, setTotalStudents] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
+  const { tokens } = useAuth();
 
   useEffect(() => {
-    api.get("/auth/me").then((r) => setIsAdmin(r.data?.role === "admin")).catch(() => { });
+    api
+      .get("/auth/me")
+      .then((r) => setIsAdmin(r.data?.role === "admin"))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -121,12 +132,12 @@ export default function DashboardPage() {
         <Link href="/subscription">
           <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:border-[#1e3a5f]/40 transition-colors cursor-pointer h-full">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
-                <CreditCard className="h-6 w-6 text-purple-600" />
+              <div className="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center">
+                <Coins className="h-6 w-6 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">Free Plan</p>
-                <p className="text-sm text-gray-500">সাবস্ক্রিপশন</p>
+                <p className="text-2xl font-bold text-gray-900">{tokens}</p>
+                <p className="text-sm text-gray-500">স্ক্যান টোকেন</p>
               </div>
             </div>
           </div>
@@ -137,7 +148,9 @@ export default function DashboardPage() {
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-100">
           <h2 className="text-lg font-bold text-gray-800">OMR টুলস</h2>
-          <p className="text-sm text-gray-500">OMR Sheet তৈরী করুন, মূল্যায়ন করুন</p>
+          <p className="text-sm text-gray-500">
+            OMR Sheet তৈরী করুন, মূল্যায়ন করুন
+          </p>
         </div>
         <div className="grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
           <Link
