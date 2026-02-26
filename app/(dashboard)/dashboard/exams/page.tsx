@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { getToken } from "@/lib/auth";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
 
 interface ExamItem {
   id: number;
@@ -20,10 +22,11 @@ export default function DashboardExamsPage() {
 
   useEffect(() => {
     const run = async () => {
-      if (!session?.backendAccessToken) return;
+      const token = session?.backendAccessToken || getToken();
+      if (!token) return;
       try {
         const res = await fetch(`${baseUrl}/exams`, {
-          headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+          headers: { Authorization: `Bearer ${token}` },
           cache: "no-store",
         });
         const data = await res.json();
@@ -39,7 +42,10 @@ export default function DashboardExamsPage() {
     <div className="max-w-5xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Exams</h1>
-        <Link href="/dashboard/exams/new" className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm">
+        <Link
+          href="/dashboard/exams/new"
+          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm"
+        >
           New Exam
         </Link>
       </div>
@@ -51,9 +57,15 @@ export default function DashboardExamsPage() {
       ) : (
         <div className="grid gap-3">
           {items.map((exam) => (
-            <Link key={exam.id} href={`/dashboard/exams/${exam.id}`} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50">
+            <Link
+              key={exam.id}
+              href={`/dashboard/exams/${exam.id}`}
+              className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50"
+            >
               <p className="font-medium">{exam.exam_name}</p>
-              <p className="text-sm text-slate-500">{exam.subject_name} · {exam.total_questions} questions</p>
+              <p className="text-sm text-slate-500">
+                {exam.subject_name} · {exam.total_questions} questions
+              </p>
             </Link>
           ))}
         </div>

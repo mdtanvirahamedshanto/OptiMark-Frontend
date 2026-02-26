@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 
 import { ExamForm, ExamFormValues } from "@/components/exam/ExamForm";
 import { useToast } from "@/components/ui/Toast";
+import { getToken } from "@/lib/auth";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
@@ -17,7 +18,9 @@ export default function NewExamPage() {
   const [loading, setLoading] = useState(false);
 
   const handleCreate = async (values: ExamFormValues) => {
-    if (!session?.backendAccessToken) {
+    const token = session?.backendAccessToken || getToken();
+
+    if (!token) {
       addToast(
         "Authentication token is missing. Please log in again.",
         "error",
@@ -31,7 +34,7 @@ export default function NewExamPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session.backendAccessToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(values),
       });

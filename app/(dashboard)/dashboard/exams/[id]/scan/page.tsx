@@ -8,8 +8,10 @@ import { MultiImageUploader } from "@/components/scan/MultiImageUploader";
 import { JobStatusTable } from "@/components/scan/JobStatusTable";
 import { ScanBatch } from "@/lib/api/types";
 import { useToast } from "@/components/ui/Toast";
+import { getToken } from "@/lib/auth";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
 
 export default function ScanPageV1() {
   const params = useParams();
@@ -22,9 +24,10 @@ export default function ScanPageV1() {
 
   const fetchBatch = useCallback(
     async (batchId: number) => {
-      if (!session?.backendAccessToken) return;
+      const token = session?.backendAccessToken || getToken();
+      if (!token) return;
       const res = await fetch(`${baseUrl}/scan-batches/${batchId}`, {
-        headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
       });
       if (res.ok) {
@@ -35,7 +38,8 @@ export default function ScanPageV1() {
   );
 
   const createBatch = async (files: File[]) => {
-    if (!session?.backendAccessToken) return;
+    const token = session?.backendAccessToken || getToken();
+    if (!token) return;
     setUploading(true);
     try {
       const formData = new FormData();
@@ -45,7 +49,7 @@ export default function ScanPageV1() {
       const res = await fetch(`${baseUrl}/exams/${examId}/scan-batches`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session.backendAccessToken}`,
+          Authorization: `Bearer ${token}`,
           "Idempotency-Key": idempotencyKey,
         },
         body: formData,
@@ -60,7 +64,10 @@ export default function ScanPageV1() {
       setBatch(data);
       addToast("Scan jobs queued", "success");
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Failed to upload scans", "error");
+      addToast(
+        error instanceof Error ? error.message : "Failed to upload scans",
+        "error",
+      );
     } finally {
       setUploading(false);
     }
@@ -83,7 +90,8 @@ export default function ScanPageV1() {
       {batch && (
         <div className="space-y-3">
           <p className="text-sm text-slate-600">
-            Batch #{batch.id} · {batch.processed_files}/{batch.total_files} processed · {batch.status}
+            Batch #{batch.id} · {batch.processed_files}/{batch.total_files}{" "}
+            processed · {batch.status}
           </p>
           <JobStatusTable jobs={batch.jobs} />
         </div>

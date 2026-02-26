@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { getToken } from "@/lib/auth";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
 
 interface ExamDetail {
   exam_name: string;
@@ -20,9 +22,10 @@ export default function ExamDetailsV1Page() {
 
   useEffect(() => {
     const run = async () => {
-      if (!session?.backendAccessToken || !examId) return;
+      const token = session?.backendAccessToken || getToken();
+      if (!token || !examId) return;
       const res = await fetch(`${baseUrl}/exams/${examId}`, {
-        headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+        headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
       });
       if (res.ok) {
@@ -33,9 +36,10 @@ export default function ExamDetailsV1Page() {
   }, [session, examId]);
 
   const downloadTemplate = async () => {
-    if (!session?.backendAccessToken) return;
+    const token = session?.backendAccessToken || getToken();
+    if (!token) return;
     const res = await fetch(`${baseUrl}/exams/${examId}/template.pdf`, {
-      headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return;
     const blob = await res.blob();
@@ -53,13 +57,22 @@ export default function ExamDetailsV1Page() {
       <p className="text-sm text-slate-500">{exam?.subject_name || ""}</p>
 
       <div className="flex gap-2 flex-wrap">
-        <button onClick={downloadTemplate} className="px-4 py-2 rounded-lg border border-slate-300 text-sm">
+        <button
+          onClick={downloadTemplate}
+          className="px-4 py-2 rounded-lg border border-slate-300 text-sm"
+        >
           Download OMR Template
         </button>
-        <Link href={`/dashboard/exams/${examId}/answer-key`} className="px-4 py-2 rounded-lg border border-slate-300 text-sm">
+        <Link
+          href={`/dashboard/exams/${examId}/answer-key`}
+          className="px-4 py-2 rounded-lg border border-slate-300 text-sm"
+        >
           Setup Answer Key
         </Link>
-        <Link href={`/dashboard/exams/${examId}/scan`} className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm">
+        <Link
+          href={`/dashboard/exams/${examId}/scan`}
+          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm"
+        >
           Upload & Scan
         </Link>
       </div>

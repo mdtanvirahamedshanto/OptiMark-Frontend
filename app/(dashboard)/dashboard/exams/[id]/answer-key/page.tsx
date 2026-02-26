@@ -6,8 +6,10 @@ import { useSession } from "next-auth/react";
 
 import { AnswerKeyEditor } from "@/components/exam/AnswerKeyEditor";
 import { useToast } from "@/components/ui/Toast";
+import { getToken } from "@/lib/auth";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
 
 interface ExamSetItem {
   set_label: string;
@@ -33,18 +35,21 @@ export default function AnswerKeyPageV1() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exam, setExam] = useState<ExamDetail | null>(null);
-  const [keysBySet, setKeysBySet] = useState<Record<string, Record<string, string>>>({});
+  const [keysBySet, setKeysBySet] = useState<
+    Record<string, Record<string, string>>
+  >({});
 
   useEffect(() => {
     const run = async () => {
-      if (!session?.backendAccessToken) return;
+      const token = session?.backendAccessToken || getToken();
+      if (!token) return;
       try {
         const [examRes, keyRes] = await Promise.all([
           fetch(`${baseUrl}/exams/${examId}`, {
-            headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+            headers: { Authorization: `Bearer ${token}` },
           }),
           fetch(`${baseUrl}/exams/${examId}/answer-keys`, {
-            headers: { Authorization: `Bearer ${session.backendAccessToken}` },
+            headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
 
@@ -68,19 +73,26 @@ export default function AnswerKeyPageV1() {
     run();
   }, [session, examId]);
 
-  const handleSave = async (setLabel: string, mapping: Record<string, string>) => {
-    if (!session?.backendAccessToken) return;
+  const handleSave = async (
+    setLabel: string,
+    mapping: Record<string, string>,
+  ) => {
+    const token = session?.backendAccessToken || getToken();
+    if (!token) return;
 
     setSaving(true);
     try {
-      const res = await fetch(`${baseUrl}/exams/${examId}/answer-keys/${encodeURIComponent(setLabel)}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.backendAccessToken}`,
+      const res = await fetch(
+        `${baseUrl}/exams/${examId}/answer-keys/${encodeURIComponent(setLabel)}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ mapping }),
         },
-        body: JSON.stringify({ mapping }),
-      });
+      );
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.detail || "Failed to save answer key");
@@ -88,7 +100,10 @@ export default function AnswerKeyPageV1() {
       setKeysBySet((prev) => ({ ...prev, [setLabel]: mapping }));
       addToast(`Saved set ${setLabel}`, "success");
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Failed to save answer key", "error");
+      addToast(
+        error instanceof Error ? error.message : "Failed to save answer key",
+        "error",
+      );
     } finally {
       setSaving(false);
     }
