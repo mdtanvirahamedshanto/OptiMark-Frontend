@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/Toast";
@@ -38,6 +38,29 @@ export default function ScanPageV1() {
 
   const [sheets, setSheets] = useState<SheetItem[]>([]);
   const [evaluating, setEvaluating] = useState(false);
+  const [hasAnswerKey, setHasAnswerKey] = useState<boolean | null>(null);
+
+  // Check if answer key exists
+  useEffect(() => {
+    const check = async () => {
+      const token = session?.backendAccessToken || getToken();
+      if (!token || !examId) return;
+      try {
+        const res = await fetch(`${baseUrl}/exams/${examId}/answer-keys`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setHasAnswerKey(Array.isArray(data) && data.length > 0);
+        } else {
+          setHasAnswerKey(false);
+        }
+      } catch {
+        setHasAnswerKey(false);
+      }
+    };
+    check();
+  }, [session, examId]);
 
   const handleFiles = useCallback((fileList: FileList | null) => {
     if (!fileList) return;
@@ -68,6 +91,10 @@ export default function ScanPageV1() {
     }
     if (sheets.length === 0) {
       addToast("Upload at least one OMR sheet image.", "error");
+      return;
+    }
+    if (!hasAnswerKey) {
+      addToast("আগে উত্তরপত্র সেট আপ করুন!", "error");
       return;
     }
 
@@ -225,6 +252,22 @@ export default function ScanPageV1() {
           </button>
         )}
       </div>
+
+      {/* Answer Key Warning */}
+      {hasAnswerKey === false && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center justify-between">
+          <p className="text-red-600 font-medium text-sm">
+            ⚠️ উত্তরপত্র সেট আপ করা হয়নি। মূল্যায়ন করতে আগে উত্তরপত্র সেট আপ
+            করুন।
+          </p>
+          <Link
+            href={`/dashboard/exams/${examId}/answer-key`}
+            className="px-4 py-1.5 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 shrink-0"
+          >
+            উত্তরপত্র সেট আপ করুন
+          </Link>
+        </div>
+      )}
 
       {/* Upload Area */}
       <div
