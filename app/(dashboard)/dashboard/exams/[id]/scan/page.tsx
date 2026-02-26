@@ -75,11 +75,15 @@ export default function ScanPageV1() {
 
   useEffect(() => {
     if (!batch?.id) return;
+    // Stop polling once the batch is fully done or failed
+    const terminalStatuses = ["completed", "done", "failed", "error"];
+    if (terminalStatuses.includes(batch.status)) return;
+
     const timer = setInterval(() => {
       fetchBatch(batch.id);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(timer);
-  }, [batch?.id, fetchBatch]);
+  }, [batch?.id, batch?.status, fetchBatch]);
 
   return (
     <div className="max-w-5xl mx-auto space-y-4">
