@@ -37,7 +37,10 @@ export default function OMRGeneratorPage() {
   const [addressSize, setAddressSize] = useState(14);
 
   // Template selection
-  const [templateType, setTemplateType] = useState<"board" | "normal">("board");
+  const [templateType, setTemplateType] = useState<"board" | "normal">(
+    "normal",
+  );
+  const [examId, setExamId] = useState<string | null>(null);
 
   // Advanced (board) state
   const [questionCount, setQuestionCount] = useState<40 | 60 | 80 | 100>(100);
@@ -62,6 +65,12 @@ export default function OMRGeneratorPage() {
         setNormalQuestionCount(String(parsed));
       }
     }
+    const typeParam = searchParams.get("type");
+    if (typeParam === "board" || typeParam === "normal") {
+      setTemplateType(typeParam);
+    }
+    const eid = searchParams.get("examId");
+    if (eid) setExamId(eid);
   }, [searchParams]);
 
   const handleDownloadPdf = useCallback(() => {
@@ -93,6 +102,14 @@ export default function OMRGeneratorPage() {
         <div className="bg-white border rounded">
           {/* Header & Download */}
           <div className="bg-gray-100 p-4 border-b">
+            {examId && (
+              <a
+                href={`/dashboard/exams/${examId}`}
+                className="block text-center text-sm text-blue-600 hover:underline mb-2"
+              >
+                ← পরীক্ষায় ফিরে যান
+              </a>
+            )}
             <h3 className="text-center text-gray-800 font-semibold mb-3">
               সেটিংস
             </h3>
