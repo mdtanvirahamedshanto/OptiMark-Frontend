@@ -25,6 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, account }) {
       if (account?.provider === "google" && account.id_token) {
+        console.log("NextAuth: Exchanging Google token with backend...");
         try {
           const res = await fetch(`${backendBaseUrl}/auth/oauth/google/exchange`, {
             method: "POST",
@@ -34,13 +35,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
           if (res.ok) {
             const data = await res.json();
+            console.log("NextAuth: Backend exchange successful", { hasToken: !!data?.access_token });
             token.backendAccessToken = data?.access_token;
             token.backendUser = data?.user;
           } else {
+            const errBody = await res.text().catch(() => "unknown");
+            console.error("NextAuth: Backend exchange failed", res.status, errBody);
             token.backendAccessToken = undefined;
             token.backendUser = undefined;
           }
-        } catch {
+        } catch (error) {
+          console.error("NextAuth: Backend exchange threw an error", error);
           token.backendAccessToken = undefined;
           token.backendUser = undefined;
         }

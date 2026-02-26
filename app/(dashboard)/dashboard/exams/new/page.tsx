@@ -7,7 +7,8 @@ import { useSession } from "next-auth/react";
 import { ExamForm, ExamFormValues } from "@/components/exam/ExamForm";
 import { useToast } from "@/components/ui/Toast";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
 
 export default function NewExamPage() {
   const router = useRouter();
@@ -16,7 +17,13 @@ export default function NewExamPage() {
   const [loading, setLoading] = useState(false);
 
   const handleCreate = async (values: ExamFormValues) => {
-    if (!session?.backendAccessToken) return;
+    if (!session?.backendAccessToken) {
+      addToast(
+        "Authentication token is missing. Please log in again.",
+        "error",
+      );
+      return;
+    }
 
     setLoading(true);
     try {
@@ -37,7 +44,10 @@ export default function NewExamPage() {
       addToast("Exam created", "success");
       router.push(`/dashboard/exams/${data.id}`);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Failed to create exam", "error");
+      addToast(
+        error instanceof Error ? error.message : "Failed to create exam",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
