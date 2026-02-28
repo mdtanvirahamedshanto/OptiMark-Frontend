@@ -14,6 +14,8 @@ import {
   ChevronRight,
   ChevronDown,
   CheckCircle2,
+  Save,
+  SaveAll,
 } from "lucide-react";
 
 const baseUrl =
@@ -34,7 +36,7 @@ interface EvalResult {
 interface SheetItem {
   file: File;
   preview: string;
-  status: "pending" | "processing" | "done" | "error";
+  status: "pending" | "processing" | "done" | "error" | "saved";
   result?: EvalResult;
 }
 
@@ -51,6 +53,7 @@ export default function AdvancedOMREvaluator() {
   const [sheets, setSheets] = useState<SheetItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [evaluating, setEvaluating] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [hasAnswerKey, setHasAnswerKey] = useState<boolean | null>(null);
 
   // Check if answer key exists
@@ -270,6 +273,85 @@ export default function AdvancedOMREvaluator() {
     addToast("All sheets evaluated!", "success");
   }, [sheets, session, examId, addToast, hasAnswerKey]);
 
+  const saveSingle = useCallback(
+    async (index: number) => {
+      const token = session?.backendAccessToken || getToken();
+      if (!token) return;
+      const sheet = sheets[index];
+      if (sheet.status !== "done" || !sheet.result?.success) return;
+
+      setSaving(true);
+      try {
+        const res = await fetch(`${baseUrl}/exams/${examId}/results`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(sheet.result),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err?.detail || `HTTP ${res.status}`);
+        }
+
+        setSheets((prev) =>
+          prev.map((s, idx) => (idx === index ? { ...s, status: "saved" } : s)),
+        );
+        addToast("Result saved successfully!", "success");
+      } catch (error) {
+        addToast(
+          `Save failed: ${error instanceof Error ? error.message : "Error"}`,
+          "error",
+        );
+      } finally {
+        setSaving(false);
+      }
+    },
+    [sheets, session, examId, addToast],
+  );
+
+  const saveAll = useCallback(async () => {
+    const token = session?.backendAccessToken || getToken();
+    if (!token) return;
+
+    setSaving(true);
+    let savedCount = 0;
+
+    for (let i = 0; i < sheets.length; i++) {
+      const sheet = sheets[i];
+      if (sheet.status !== "done" || !sheet.result?.success) continue;
+
+      try {
+        const res = await fetch(`${baseUrl}/exams/${examId}/results`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(sheet.result),
+        });
+
+        if (res.ok) {
+          savedCount++;
+          setSheets((prev) =>
+            prev.map((s, idx) => (idx === i ? { ...s, status: "saved" } : s)),
+          );
+        }
+      } catch (error) {
+        // Continue trying others
+      }
+    }
+
+    setSaving(false);
+    if (savedCount > 0) {
+      addToast(`${savedCount} results saved successfully!`, "success");
+    } else {
+      addToast("No new successful results to save.", "error");
+    }
+  }, [sheets, session, examId, addToast]);
+
   const scrollThumbnails = (direction: "left" | "right") => {
     if (thumbnailContainerRef.current) {
       const scrollAmount = 200;
@@ -280,8 +362,13 @@ export default function AdvancedOMREvaluator() {
     }
   };
 
-  const completedCount = sheets.filter((s) => s.status === "done").length;
+  const completedCount = sheets.filter(
+    (s) => s.status === "done" || s.status === "saved",
+  ).length;
   const pendingCount = sheets.filter((s) => s.status === "pending").length;
+  const unsavedCount = sheets.filter(
+    (s) => s.status === "done" && s.result?.success,
+  ).length;
   const totalMarks = sheets
     .filter((s) => s.result?.success)
     .reduce((sum, s) => sum + (s.result?.marks_obtained || 0), 0);
@@ -368,6 +455,8 @@ export default function AdvancedOMREvaluator() {
                   {activeSheet.status === "done" &&
                     !activeSheet.result?.success &&
                     "Error: " + activeSheet.result?.message}
+                  {activeSheet.status === "saved" &&
+                    `Saved Result: ${activeSheet.result?.marks_obtained} Marks`}
                 </div>
               )}
             </div>
@@ -390,7 +479,8 @@ export default function AdvancedOMREvaluator() {
               disabled={
                 sheets.length === 0 ||
                 evaluating ||
-                activeSheet?.status === "done"
+                activeSheet?.status === "done" ||
+                activeSheet?.status === "saved"
               }
               className="w-full sm:flex-1 py-3 px-6 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold text-[15px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm border border-gray-200"
             >
@@ -399,6 +489,30 @@ export default function AdvancedOMREvaluator() {
                 : "Evaluate Selected"}
             </button>
 
+            {(activeSheet?.status === "done" ||
+              activeSheet?.status === "saved") &&
+              activeSheet.result?.success && (
+                <button
+                  onClick={() => saveSingle(selectedIndex)}
+                  disabled={saving || activeSheet.status === "saved"}
+                  className={`w-full sm:w-auto py-3 px-6 rounded-xl flex items-center justify-center gap-2 font-semibold text-[15px] transition-colors shadow-sm ${
+                    activeSheet.status === "saved"
+                      ? "bg-green-100 text-green-700 border border-green-200"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                >
+                  {activeSheet.status === "saved" ? (
+                    <>
+                      <CheckCircle2 className="w-5 h-5" /> Saved
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5" /> Save Result
+                    </>
+                  )}
+                </button>
+              )}
+
             {pendingCount > 1 && (
               <button
                 onClick={evaluateAll}
@@ -406,6 +520,16 @@ export default function AdvancedOMREvaluator() {
                 className="w-full sm:w-auto py-3 px-6 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-[15px] transition-colors disabled:opacity-50 shadow-sm"
               >
                 Evaluate All ({pendingCount})
+              </button>
+            )}
+
+            {unsavedCount > 1 && (
+              <button
+                onClick={saveAll}
+                disabled={saving}
+                className="w-full sm:w-auto py-3 px-6 rounded-xl flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-[15px] transition-colors disabled:opacity-50 shadow-sm"
+              >
+                <SaveAll className="w-5 h-5" /> Save All ({unsavedCount})
               </button>
             )}
           </div>
@@ -483,7 +607,8 @@ export default function AdvancedOMREvaluator() {
                 {sheet.status !== "pending" && (
                   <div
                     className={`absolute bottom-0 right-0 w-4 h-4 rounded-tl-lg flex items-center justify-center ${
-                      sheet.status === "done" && sheet.result?.success
+                      (sheet.status === "done" || sheet.status === "saved") &&
+                      sheet.result?.success
                         ? "bg-green-500"
                         : sheet.status === "error" ||
                             (sheet.status === "done" && !sheet.result?.success)
@@ -551,7 +676,12 @@ export default function AdvancedOMREvaluator() {
               <tbody>
                 {sheets
                   .map((s, i) => ({ ...s, originalIndex: i }))
-                  .filter((s) => s.status === "done" || s.status === "error")
+                  .filter(
+                    (s) =>
+                      s.status === "done" ||
+                      s.status === "error" ||
+                      s.status === "saved",
+                  )
                   .map((sheet) => (
                     <tr
                       key={sheet.originalIndex}
@@ -578,10 +708,18 @@ export default function AdvancedOMREvaluator() {
                       <td className="px-5 py-3 text-center">
                         {sheet.result?.success ? (
                           <span
-                            className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600 cursor-help"
+                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold cursor-help"
                             title={sheet.result?.message}
                           >
-                            <CheckCircle2 className="w-4 h-4" />
+                            {sheet.status === "saved" ? (
+                              <span className="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded-md">
+                                <CheckCircle2 className="w-3.5 h-3.5" /> Saved
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-1 bg-blue-50 text-blue-600 px-2 py-1 rounded-md border border-blue-200">
+                                Evaluated
+                              </span>
+                            )}
                           </span>
                         ) : (
                           <span
