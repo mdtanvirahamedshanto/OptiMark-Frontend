@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/components/ui/Toast";
-import { useSession } from "next-auth/react";
 
 const BACKEND_V1_BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_V1_URL || "http://localhost:8000/v1";
@@ -33,12 +32,11 @@ export default function AdminPlansPage() {
   const [loading, setLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<Partial<Plan> | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { data: session } = useSession();
-  const token = (session as any)?.backendAccessToken || null;
 
   const fetchPlans = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("mcqscanner_token");
       const res = await fetch(`${BACKEND_V1_BASE_URL}/plans`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
@@ -69,6 +67,8 @@ export default function AdminPlansPage() {
 
     setIsSubmitting(true);
     try {
+      const token = localStorage.getItem("mcqscanner_token");
+
       if (editingPlan.id) {
         // Update
         const res = await fetch(
@@ -132,6 +132,7 @@ export default function AdminPlansPage() {
     )
       return;
     try {
+      const token = localStorage.getItem("mcqscanner_token");
       const res = await fetch(`${BACKEND_V1_BASE_URL}/plans/${id}`, {
         method: "DELETE",
         headers: token ? { Authorization: `Bearer ${token}` } : {},

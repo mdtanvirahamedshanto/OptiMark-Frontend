@@ -9,8 +9,11 @@ import {
   CreditCard,
   FileQuestion,
   Settings,
+  LogOut,
 } from "lucide-react";
 import { ProtectedRoute } from "@/components/ui/ProtectedRoute";
+import { signOut } from "next-auth/react";
+import { useAuth } from "@/components/ui/AuthContext";
 
 export default function AdminLayout({
   children,
@@ -18,6 +21,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    signOut({ callbackUrl: "/login" });
+  };
 
   const nav = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -60,12 +69,13 @@ export default function AdminLayout({
             })}
           </nav>
           <div className="p-4 border-t border-slate-200">
-            <Link
-              href="/dashboard"
-              className="text-sm text-slate-600 hover:text-[#1e3a5f] block mb-4"
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors mb-4"
             >
-              ← Back to User Dashboard
-            </Link>
+              <LogOut className="w-5 h-5 text-slate-400" />
+              <span>লগআউট</span>
+            </button>
             <div className="text-[10px] text-slate-400 font-medium">
               Developed by{" "}
               <a
