@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -15,10 +15,10 @@ import { getErrorMessageFromPayload } from "@/lib/api/error";
 const LEGACY_API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const { addToast } = useToast();
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { login, isAuthenticated, isLoading, role } = useAuth();
   const searchParams = useSearchParams();
   const nextPath = searchParams.get("next") || "/dashboard";
   const loginError = searchParams.get("error");
@@ -29,17 +29,25 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.replace(nextPath);
+      if (role === "admin" && nextPath === "/dashboard") {
+        router.replace("/admin/dashboard");
+      } else {
+        router.replace(nextPath);
+      }
       return;
     }
     if (status === "authenticated" && session?.backendAccessToken) {
-      router.replace(nextPath);
+      if (role === "admin" && nextPath === "/dashboard") {
+        router.replace("/admin/dashboard");
+      } else {
+        router.replace(nextPath);
+      }
       return;
     }
     if (status === "authenticated" && !session?.backendAccessToken) {
       signOut({ redirect: false });
     }
-  }, [status, session, isLoading, isAuthenticated, router, nextPath]);
+  }, [status, session, isLoading, isAuthenticated, router, nextPath, role]);
 
   const handleManualLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,9 +69,15 @@ export default function LoginPage() {
       if (!data?.access_token) {
         throw new Error("Login token missing");
       }
-      login(data.access_token, data.role || "teacher", "manual");
+      const userRole = data.role || "teacher";
+      login(data.access_token, userRole, "manual");
       addToast("Login successful", "success");
-      router.replace(nextPath);
+
+      if (userRole === "admin" && nextPath === "/dashboard") {
+        router.replace("/admin/dashboard");
+      } else {
+        router.replace(nextPath);
+      }
     } catch (error) {
       const message =
         error instanceof Error && error.message === "Failed to fetch"
@@ -81,7 +95,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">Login to OptiMark</h1>
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Login to OptiMark
+        </h1>
         <p className="text-sm text-slate-500 mt-2">
           Login with email/password or Google.
         </p>
@@ -103,15 +119,15 @@ export default function LoginPage() {
             label="Password"
             type="password"
             value={form.password}
-            onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, password: e.target.value }))
+            }
             required
           />
           <Button type="submit" className="w-full" isLoading={submitting}>
             Login
           </Button>
-          {formError && (
-            <p className="text-sm text-red-600">{formError}</p>
-          )}
+          {formError && <p className="text-sm text-red-600">{formError}</p>}
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs text-slate-400">
@@ -137,5 +153,19 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1e3a5f]"></div>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }

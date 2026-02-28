@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, Suspense } from "react";
 import { Download } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import OMRSheet, {
@@ -25,7 +25,7 @@ const colorOptions: { label: string; value: OMRColor; hex: string }[] = [
   { label: "Lime", value: "lime", hex: "#84cc16" },
 ];
 
-export default function OMRGeneratorPage() {
+function OMRGeneratorContent() {
   const { institutionName: authInstitution, address: authAddress } = useAuth();
   const searchParams = useSearchParams();
 
@@ -496,5 +496,19 @@ export default function OMRGeneratorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OMRGeneratorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center p-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1e3a5f]"></div>
+        </div>
+      }
+    >
+      <OMRGeneratorContent />
+    </Suspense>
   );
 }
