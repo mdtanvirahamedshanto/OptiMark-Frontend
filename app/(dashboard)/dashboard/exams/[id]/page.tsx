@@ -124,12 +124,14 @@ export default function ExamDetailsV1Page() {
         <h2 className="text-sm font-semibold text-slate-500 uppercase mb-4">
           কার্যক্রম
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <Link
             href={`/omr/generator?qCount=${exam.total_questions}&type=normal&examId=${examId}`}
             className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all group"
           >
-            <Download className="w-5 h-5 text-blue-500 group-hover:text-blue-600" />
+            <div className="flex-shrink-0">
+              <Download className="w-5 h-5 text-blue-500 group-hover:text-blue-600" />
+            </div>
             <div>
               <p className="font-medium text-slate-800 text-sm">OMR ডাউনলোড</p>
               <p className="text-xs text-slate-400">টেমপ্লেট তৈরি করুন</p>
@@ -139,7 +141,9 @@ export default function ExamDetailsV1Page() {
             href={`/dashboard/exams/${examId}/answer-key`}
             className="flex items-center gap-3 px-4 py-3 rounded-xl border border-slate-200 hover:border-amber-300 hover:bg-amber-50/50 transition-all group"
           >
-            <KeyRound className="w-5 h-5 text-amber-500 group-hover:text-amber-600" />
+            <div className="flex-shrink-0">
+              <KeyRound className="w-5 h-5 text-amber-500 group-hover:text-amber-600" />
+            </div>
             <div>
               <p className="font-medium text-slate-800 text-sm">
                 উত্তরপত্র সেটআপ
@@ -151,12 +155,26 @@ export default function ExamDetailsV1Page() {
             href={`/dashboard/exams/${examId}/scan`}
             className="flex items-center gap-3 px-4 py-3 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition-all group"
           >
-            <ScanLine className="w-5 h-5 text-emerald-600" />
+            <div className="flex-shrink-0">
+              <ScanLine className="w-5 h-5 text-emerald-600" />
+            </div>
             <div>
               <p className="font-medium text-emerald-800 text-sm">
                 OMR মূল্যায়ন
               </p>
               <p className="text-xs text-emerald-500">আপলোড ও স্ক্যান</p>
+            </div>
+          </Link>
+          <Link
+            href={`/dashboard/results?exam_id=${examId}`}
+            className="flex items-center gap-3 px-4 py-3 rounded-xl border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 transition-all group"
+          >
+            <div className="flex-shrink-0">
+              <Layers className="w-5 h-5 text-indigo-600" />
+            </div>
+            <div>
+              <p className="font-medium text-indigo-800 text-sm">ফলাফল দেখুন</p>
+              <p className="text-xs text-indigo-500">সংরক্ষিত মার্কশিট</p>
             </div>
           </Link>
         </div>
