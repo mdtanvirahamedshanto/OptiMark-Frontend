@@ -662,6 +662,9 @@ export default function AdvancedOMREvaluator() {
                   </th>
                   <th className="px-5 py-3 text-left font-medium">সেট (Set)</th>
                   <th className="px-5 py-3 text-right font-medium">
+                    উত্তর দেওয়া (Answered)
+                  </th>
+                  <th className="px-5 py-3 text-right font-medium">
                     নম্বর (Score)
                   </th>
                   <th className="px-5 py-3 text-right font-medium">%</th>
@@ -695,6 +698,10 @@ export default function AdvancedOMREvaluator() {
                       </td>
                       <td className="px-5 py-3 font-medium text-gray-800">
                         {sheet.result?.set_code || "-"}
+                      </td>
+                      <td className="px-5 py-3 text-right font-medium text-indigo-600">
+                        {sheet.result?.answers?.filter((a) => a !== -1)
+                          .length ?? 0}
                       </td>
                       <td className="px-5 py-3 text-right font-bold text-gray-800">
                         {sheet.result?.marks_obtained ?? 0}

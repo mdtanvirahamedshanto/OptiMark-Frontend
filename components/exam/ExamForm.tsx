@@ -18,6 +18,7 @@ export interface ExamFormValues {
   negative_marking: boolean;
   negative_value: number;
   options_per_question: number;
+  template_type: string;
 }
 
 export function ExamForm({
@@ -40,6 +41,7 @@ export function ExamForm({
     negative_marking: initial?.negative_marking ?? false,
     negative_value: initial?.negative_value ?? 0.25,
     options_per_question: initial?.options_per_question || 4,
+    template_type: initial?.template_type || "auto",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,6 +78,22 @@ export function ExamForm({
           setForm((p) => ({ ...p, subject_code: e.target.value }))
         }
       />
+
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-slate-700">
+          Template Type
+        </label>
+        <select
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 bg-white"
+          value={form.template_type}
+          onChange={(e) =>
+            setForm((p) => ({ ...p, template_type: e.target.value }))
+          }
+        >
+          <option value="auto">Auto (Standard Layout)</option>
+          <option value="20q_mcq_png">Custom 20Q Hand-written Sheet</option>
+        </select>
+      </div>
 
       <label className="flex items-center gap-2 text-sm">
         <input
